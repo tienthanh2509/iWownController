@@ -119,7 +119,9 @@ public class Device {
         GregorianCalendar date = new GregorianCalendar();
         ArrayList<Byte> data = new ArrayList<>();
         data.add(((byte) (date.get(Calendar.YEAR) - 2000)));
-        if (App.sPref.getString("device_model", "i5").contains("+"))
+
+        String deviceName= App.sPref.getString("device_model", "i5");
+        if (deviceName.contains("+") || deviceName.contains("I7S2"))
             data.add(((byte) (date.get(Calendar.MONTH))));
         else
             data.add(((byte) (date.get(Calendar.MONTH) - 1)));
