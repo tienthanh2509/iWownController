@@ -1,0 +1,119 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:key="pref_key_body_settings"
+        android:title="@string/pref_group_body">
+
+        <EditTextPreference
+            android:capitalize="words"
+            android:defaultValue="1000"
+            android:inputType="textCapWords"
+            android:key="dev_conf_goal"
+            android:maxLines="1"
+            android:numeric="integer"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="@string/pref_device_body_goal"/>
+
+        <EditTextPreference
+            android:capitalize="words"
+            android:defaultValue="70"
+            android:inputType="textCapWords"
+            android:key="dev_conf_weight"
+            android:maxLines="1"
+            android:numeric="integer"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="@string/pref_device_body_weight"/>
+
+        <EditTextPreference
+            android:capitalize="words"
+            android:defaultValue="180"
+            android:inputType="textCapWords"
+            android:key="dev_conf_height"
+            android:maxLines="1"
+            android:numeric="integer"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="@string/pref_device_body_height"/>
+
+        <EditTextPreference
+            android:capitalize="words"
+            android:defaultValue="26"
+            android:inputType="textCapWords"
+            android:key="dev_conf_age"
+            android:maxLines="1"
+            android:numeric="integer"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="@string/pref_device_body_age"/>
+
+        <ListPreference
+            android:defaultValue="0"
+            android:entries="@array/pref_device_body_gender_titles"
+            android:entryValues="@array/pref_device_body_gender_values"
+            android:key="dev_conf_gender"
+            android:negativeButtonText="@null"
+            android:positiveButtonText="@null"
+            android:title="@string/pref_device_body_gender"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="pref_key_body_settings"
+        android:title="@string/pref_group_device">
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="dev_conf_gesture"
+            android:summary="@string/pref_device_gesture_desc"
+            android:title="@string/pref_device_gesture"/>
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="dev_conf_light"
+            android:title="@string/pref_device_light"/>
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="dev_conf_autosleep"
+            android:title="@string/pref_device_auto_sleep"/>
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="dev_conf_use24hours"
+            android:title="@string/pref_device_use24hours"/>
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="dev_conf_englishunits"
+            android:title="@string/pref_device_english_units"/>
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="dev_conf_ble"
+            android:summary="@string/pref_device_ble_desc"
+            android:title="@string/pref_device_ble"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="pref_key_body_settings"
+        android:title="@string/pref_group_notif">
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="notif_foreign"
+            android:summary="@string/pref_notif_foreign_desc"
+            android:title="@string/pref_notif_foreign"/>
+
+        <EditTextPreference
+            android:capitalize="words"
+            android:defaultValue="0"
+            android:inputType="textCapWords"
+            android:key="notif_delay"
+            android:maxLines="1"
+            android:numeric="integer"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:summary="@string/pref_notif_delay_desc"
+            android:title="@string/pref_notif_delay"/>
+
+    </PreferenceCategory>
+</PreferenceScreen>
