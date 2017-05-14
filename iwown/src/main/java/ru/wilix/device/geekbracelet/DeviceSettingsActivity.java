@@ -102,7 +102,7 @@ public class DeviceSettingsActivity extends Activity {
                     BLEService.getSelf().getDevice().askConfig();
                     Thread.sleep(500);
                     BLEService.getSelf().getDevice().askUserParams();
-                } catch (Exception e) {
+                } catch (Exception ignored) {
                 }
             }
         }).start();

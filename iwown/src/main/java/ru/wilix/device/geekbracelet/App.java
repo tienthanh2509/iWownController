@@ -12,9 +12,6 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.widget.Toast;
 
-import org.acra.ACRA;
-import org.acra.annotation.ReportsCrashes;
-
 /**
  * Created by Aloyan Dmitry on 29.08.2015
  */
@@ -30,7 +27,6 @@ public class App extends Application {
 
     @Override
     public void onCreate() {
-        ACRA.init(this);
         super.onCreate();
         App.mContext = getApplicationContext();
         App.sPref = PreferenceManager.getDefaultSharedPreferences(App.mContext);
@@ -45,7 +41,7 @@ public class App extends Application {
 
             Notification notification = new NotificationCompat.Builder(this)
                     .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher))
-                    .setSmallIcon(R.drawable.ic_launcher)
+                    .setSmallIcon(R.drawable.ic_watch_24dp_black)
                     .setContentText("WiliX Controller")
                     .setContentTitle("WiliX Controller")
                     .setTicker("WiliX Controller")

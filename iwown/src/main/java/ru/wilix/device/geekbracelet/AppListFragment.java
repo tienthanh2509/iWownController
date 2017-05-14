@@ -30,10 +30,7 @@ public class AppListFragment extends ListFragment {
         protected Void doInBackground(Void... params) {
             applist = packageManager.getInstalledApplications(PackageManager.GET_META_DATA);
             for (ApplicationInfo app : applist)
-                if (AppNotification.canNotice(app.packageName) > 0)
-                    app.enabled = true;
-                else
-                    app.enabled = false;
+                app.enabled = AppNotification.canNotice(app.packageName) > 0;
             listadaptor = new AppsAdapter(getActivity(), R.layout.applist_item, applist);
             return null;
         }

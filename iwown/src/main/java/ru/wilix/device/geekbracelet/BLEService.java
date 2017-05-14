@@ -44,8 +44,8 @@ public class BLEService extends Service {
     public static final int STATE_CONNECTING = 1;
     public static final int STATE_CONNECTED = 2;
     private final static String TAG = BLEService.class.getSimpleName();
-    public static ArrayList<BluetoothGattService> services = new ArrayList();
-    public static ArrayList<BluetoothGattCharacteristic> characteristics = new ArrayList();
+    public static ArrayList<BluetoothGattService> services = new ArrayList<>();
+    public static ArrayList<BluetoothGattCharacteristic> characteristics = new ArrayList<>();
     public static BLEService self;
     public int mConnectionState = STATE_DISCONNECTED;
     boolean alreadyChecking = false;
@@ -182,7 +182,7 @@ public class BLEService extends Service {
         try {
             mBluetoothGatt.disconnect();
             close();
-        } catch (Exception e) {
+        } catch (Exception ignored) {
 
         }
     }
@@ -236,7 +236,7 @@ public class BLEService extends Service {
                         }
                     }
                     checkConnection();
-                } catch (Exception e) {
+                } catch (Exception ignored) {
                 }
             }
         }).start();

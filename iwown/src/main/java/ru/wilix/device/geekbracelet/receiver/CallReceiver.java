@@ -27,10 +27,10 @@ public class CallReceiver extends BroadcastReceiver {
         try {
             Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(phoneNumber));
             cursor = context.getContentResolver().query(uri, new String[]{"display_name", "type", "label"}, null, null, "display_name LIMIT 1");
-            if (cursor.moveToNext())
+            if (cursor != null && cursor.moveToNext()) {
                 name = cursor.getString(cursor.getColumnIndex("display_name"));
-            if (cursor != null)
                 cursor.close();
+            }
         } catch (Exception e) {
             name = phoneNumber;
             if (cursor != null) {
