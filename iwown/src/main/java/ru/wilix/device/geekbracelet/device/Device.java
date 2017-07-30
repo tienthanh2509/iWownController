@@ -2,6 +2,7 @@ package ru.wilix.device.geekbracelet.device;
 
 import android.bluetooth.BluetoothGattCharacteristic;
 
+import ru.wilix.device.geekbracelet.bluetooth.Communication;
 import ru.wilix.device.geekbracelet.model.DeviceClockAlarm;
 
 /**
@@ -9,14 +10,31 @@ import ru.wilix.device.geekbracelet.model.DeviceClockAlarm;
  */
 
 public interface Device {
+    public Communication getComm();
+
+    /**
+     * Send request get firmware version
+     */
     void askFmVersionInfo();
 
+    /**
+     * Send request get current battery level
+     */
     void askPower();
 
+    /**
+     * Send request get device config
+     */
     void askConfig();
 
+    /**
+     * Send request get user params
+     */
     void askUserParams();
 
+    /**
+     * Send request get ble setting
+     */
     void askBle();
 
     void askDailyData();

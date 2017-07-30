@@ -159,7 +159,7 @@ public class BLEService extends Service {
             return false;
         }
         // We want to directly connect to the device
-        mBluetoothGatt = device.connectGatt(this, true, this.device.comm);
+        mBluetoothGatt = device.connectGatt(this, true, this.device.getComm());
         Log.d(TAG, "Trying to create a new connection.");
         mConnectionState = STATE_CONNECTING;
         //this.autoReconnectOnTimeout();

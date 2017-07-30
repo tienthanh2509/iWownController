@@ -43,6 +43,10 @@ public class GenericDevice implements Device {
         this.comm = new Communication(bleService, this);
     }
 
+    public Communication getComm() {
+        return comm;
+    }
+
     /**
      * Return Firmware version
      */
