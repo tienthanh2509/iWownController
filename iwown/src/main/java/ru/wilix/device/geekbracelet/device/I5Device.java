@@ -11,8 +11,8 @@ import ru.wilix.device.geekbracelet.utils.CommunicationUtils;
  * Created by ptthanh on 7/30/2017.
  */
 
-public class I7s2Device extends GenericDevice {
-    public I7s2Device(BLEService bleService) {
+public class I5Device extends GenericDevice {
+    public I5Device(BLEService bleService) {
         super(bleService);
     }
 

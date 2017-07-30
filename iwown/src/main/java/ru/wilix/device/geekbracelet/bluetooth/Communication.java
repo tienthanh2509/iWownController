@@ -14,10 +14,10 @@ import java.util.Date;
 import java.util.UUID;
 
 import ru.wilix.device.geekbracelet.App;
-import ru.wilix.device.geekbracelet.service.BLEService;
 import ru.wilix.device.geekbracelet.BroadcastConstants;
 import ru.wilix.device.geekbracelet.common.Constants;
 import ru.wilix.device.geekbracelet.device.Device;
+import ru.wilix.device.geekbracelet.service.BLEService;
 
 /**
  * Created by Dmitry on 29.08.2015.

@@ -1,9 +1,14 @@
 package ru.wilix.device.geekbracelet.utils;
 
 import android.bluetooth.BluetoothGattCharacteristic;
+import android.bluetooth.BluetoothManager;
+import android.content.Context;
+import android.content.pm.PackageManager;
 
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
+
+import ru.wilix.device.geekbracelet.App;
 
 /**
  * Created by Dmitry on 30.08.2015.
@@ -131,5 +136,16 @@ public class CommunicationUtils {
         System.arraycopy(a, 0, c, 0, a.length);
         System.arraycopy(b, 0, c, a.length, b.length);
         return c;
+    }
+
+    public static boolean isBluetoothAvailable() {
+        if (!App.mContext.getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE))
+            return false;
+
+        // Initializes a Bluetooth adapter.  For API level 18 and above, get a reference to
+        // BluetoothAdapter through BluetoothManager.
+        final BluetoothManager bluetoothManager = (BluetoothManager) App.mContext.getSystemService(Context.BLUETOOTH_SERVICE);
+        // Checks if Bluetooth is supported on the device.
+        return bluetoothManager.getAdapter() != null;
     }
 }

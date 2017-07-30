@@ -8,7 +8,7 @@ import ru.wilix.device.geekbracelet.model.DeviceClockAlarm;
  * Created by ptthanh on 7/30/2017.
  */
 
-interface Device {
+public interface Device {
     void askFmVersionInfo();
 
     void askPower();

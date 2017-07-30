@@ -25,7 +25,6 @@ import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -34,7 +33,12 @@ import java.util.Date;
 import java.util.UUID;
 
 import ru.wilix.device.geekbracelet.App;
+import ru.wilix.device.geekbracelet.bluetooth.Communication;
+import ru.wilix.device.geekbracelet.common.WristbandModel;
+import ru.wilix.device.geekbracelet.device.Device;
 import ru.wilix.device.geekbracelet.device.GenericDevice;
+import ru.wilix.device.geekbracelet.device.I5Device;
+import ru.wilix.device.geekbracelet.device.I7s2Device;
 
 /**
  * Service for managing connection and data communication with a GATT server hosted on a
@@ -45,6 +49,7 @@ public class BLEService extends Service {
     public static final int STATE_CONNECTING = 1;
     public static final int STATE_CONNECTED = 2;
     private final static String TAG = BLEService.class.getSimpleName();
+
     public static ArrayList<BluetoothGattService> services = new ArrayList<>();
     public static ArrayList<BluetoothGattCharacteristic> characteristics = new ArrayList<>();
     public static BLEService self;
@@ -52,31 +57,24 @@ public class BLEService extends Service {
     boolean alreadyChecking = false;
     private BluetoothManager mBluetoothManager;
     private BluetoothAdapter mBluetoothAdapter;
-    private GenericDevice device;
+    private Device device;
     private BluetoothGatt mBluetoothGatt;
 
     public static BLEService getSelf() {
         return self;
     }
 
-    public static boolean isBluetoothAvailable() {
-        if (!App.mContext.getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE))
-            return false;
-
-        // Initializes a Bluetooth adapter.  For API level 18 and above, get a reference to
-        // BluetoothAdapter through BluetoothManager.
-        final BluetoothManager bluetoothManager = (BluetoothManager) App.mContext.getSystemService(Context.BLUETOOTH_SERVICE);
-        // Checks if Bluetooth is supported on the device.
-        if (bluetoothManager.getAdapter() == null)
-            return false;
-        return true;
-    }
-
     public void onCreate() {
         super.onCreate();
         self = this;
 
-        this.device = new GenericDevice(this);
+        if (App.sPref.getString("device_model", "").equals(WristbandModel.MODEL_I7S2))
+            this.device = new I7s2Device(this);
+        else if (App.sPref.getString("device_model", "").equals(WristbandModel.MODEL_I5PLUS))
+            this.device = new I5Device(this);
+        else
+            this.device = new GenericDevice(this);
+
         if (!initialize()) {
             Log.e(TAG, "Unable to initialize Bluetooth");
             return;
@@ -88,7 +86,7 @@ public class BLEService extends Service {
         return super.onStartCommand(intent, flags, startId);
     }
 
-    public GenericDevice getDevice() {
+    public Device getDevice() {
         return this.device;
     }
 
@@ -157,7 +155,7 @@ public class BLEService extends Service {
 
         final BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(address);
         if (device == null) {
-            Log.w(TAG, "Device not found.  Unable to connect.");
+            Log.w(TAG, "Device not found. Unable to connect.");
             return false;
         }
         // We want to directly connect to the device
@@ -226,7 +224,7 @@ public class BLEService extends Service {
                     if (App.sPref.getString("DEVICE_ADDR", "").length() > 0) {
                         if (BLEService.getSelf() != null && BLEService.getSelf().getDevice() != null) {
                             // FIXME bad practice use comm object
-                            if (BLEService.getSelf().getDevice().comm.lastDataReceived - (new Date().getTime()) >= 120000) {
+                            if (Communication.lastDataReceived - (new Date().getTime()) >= 120000) {
                                 BLEService.getSelf().disconnect();
                                 BLEService.getSelf().connect(App.sPref.getString("DEVICE_ADDR", ""), true);
                                 checkConnection();

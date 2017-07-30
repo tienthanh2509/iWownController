@@ -3,8 +3,6 @@ package ru.wilix.device.geekbracelet.model;
 import android.bluetooth.BluetoothGattCharacteristic;
 
 import java.io.Serializable;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -116,20 +114,6 @@ public class Sport implements Serializable {
         return tmp;
     }
 
-    public String toString() {
-        String buff = "";
-        Field[] fields = this.getClass().getDeclaredFields();
-        for (Field field : fields) {
-            if ((field.getModifiers() & Modifier.FINAL) == Modifier.FINAL)
-                continue;
-            try {
-                buff += field.getName() + ": " + field.get(this) + " ";
-            } catch (Exception e) {
-            }
-        }
-        return buff;
-    }
-
     public int getBcc() {
         return this.bcc;
     }
@@ -216,5 +200,22 @@ public class Sport implements Serializable {
 
     public void setType(int value) {
         this.type = value;
+    }
+
+    @Override
+    public String toString() {
+        return "Sport{" +
+                "bcc=" + bcc +
+                ", minute=" + minute +
+                ", hour=" + hour +
+                ", day=" + day +
+                ", month=" + month +
+                ", year=" + year +
+                ", flag=" + flag +
+                ", steps=" + steps +
+                ", distance=" + distance +
+                ", calorie=" + calorie +
+                ", type=" + type +
+                '}';
     }
 }

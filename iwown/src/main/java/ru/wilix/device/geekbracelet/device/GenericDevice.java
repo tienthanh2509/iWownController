@@ -35,7 +35,6 @@ import ru.wilix.device.geekbracelet.utils.PebbleBitmapUtil;
 public class GenericDevice implements Device {
     private static final String TAG = GenericDevice.class.getName();
     public Communication comm;
-    public DeviceInfo deviceInfo;
     private byte[] receiveBuffer;
     private int receiveBufferLength = 0;
     private boolean isDataOver = true;
@@ -134,11 +133,7 @@ public class GenericDevice implements Device {
         ArrayList<Byte> data = new ArrayList<>();
         data.add(((byte) (date.get(Calendar.YEAR) - 2000)));
 
-        String deviceName = App.sPref.getString("device_model", "i5");
-        if (deviceName.contains("+") || deviceName.contains("I7S2"))
-            data.add(((byte) (date.get(Calendar.MONTH))));
-        else
-            data.add(((byte) (date.get(Calendar.MONTH) - 1)));
+        data.add(((byte) (date.get(Calendar.MONTH) - 1)));
         data.add(((byte) (date.get(Calendar.DAY_OF_MONTH) - 1)));
         data.add(((byte) date.get(Calendar.HOUR_OF_DAY)));
         data.add(((byte) date.get(Calendar.MINUTE)));
@@ -178,7 +173,7 @@ public class GenericDevice implements Device {
     /**
      * Set selfie mode. Rise selfie event on one click to button
      *
-     * @param enable
+     * @param enable Enable selfie mode
      */
     @Override
     public void setSelfieMode(boolean enable) {
@@ -377,7 +372,6 @@ public class GenericDevice implements Device {
                         switch (this.receiveBuffer[2]) {
                             case Constants.APIv1_DATA_DEVICE_INFO:
                                 DeviceInfo info = DeviceInfo.fromData(this.receiveBuffer);
-                                deviceInfo = info;
 
                                 SharedPreferences.Editor ed = App.sPref.edit();
                                 ed.putString("device_model", info.getModel());
@@ -442,7 +436,8 @@ public class GenericDevice implements Device {
                             case Constants.APIv1_DATA_DEVICE_DATE:
                                 int year = CommunicationUtils.bytesToInt(Arrays.copyOfRange(this.receiveBuffer, 4, 5)) + 2000;
                                 int month;
-                                if (App.sPref.getString("device_model", "i5").contains("+"))
+                                if (App.sPref.getString("device_model", "i5").contains("+")
+                                        || App.sPref.getString("device_model", "i5").contains("I7S2"))
                                     month = CommunicationUtils.bytesToInt(Arrays.copyOfRange(this.receiveBuffer, 5, 6));
                                 else
                                     month = CommunicationUtils.bytesToInt(Arrays.copyOfRange(this.receiveBuffer, 5, 6)) + 1;
@@ -458,21 +453,21 @@ public class GenericDevice implements Device {
                                 break;
                             case Constants.APIv1_DATA_SUBSCRIBE_FOR_SPORT:
                                 Sport dailySport = Sport.fromBytes(this.receiveBuffer, Sport.TYPE_DAILY_A);
-                                Log.d(TAG, "DAILY_SPORT: " + dailySport.toString());
+                                Log.d(TAG, "DAILY_SPORT: " + dailySport);
                                 intent = new Intent(BroadcastConstants.ACTION_SPORT_DATA);
                                 intent.putExtra("data", dailySport);
                                 App.mContext.sendBroadcast(intent);
                                 break;
                             case Constants.APIv1_DATA_LOCAL_SPORT:
                                 Sport localSport = Sport.fromBytes(this.receiveBuffer, Sport.TYPE_LOCAL_SPORT);
-                                Log.d(TAG, "LOCAL_SPORT: " + localSport.toString());
+                                Log.d(TAG, "LOCAL_SPORT: " + localSport);
                                 intent = new Intent(BroadcastConstants.ACTION_SPORT_DATA);
                                 intent.putExtra("data", localSport);
                                 App.mContext.sendBroadcast(intent);
                                 break;
                             case Constants.APIv1_DATA_DAILY_SPORT2:
                                 Sport dailySport2 = Sport.fromBytes(this.receiveBuffer, Sport.TYPE_DAILY_B);
-                                Log.d(TAG, "DAILY_SPORT2: " + dailySport2.toString());
+                                Log.d(TAG, "DAILY_SPORT2: " + dailySport2);
                                 intent = new Intent(BroadcastConstants.ACTION_SPORT_DATA);
                                 intent.putExtra("data", dailySport2);
                                 App.mContext.sendBroadcast(intent);
@@ -546,7 +541,7 @@ public class GenericDevice implements Device {
     /**
      * Send data to device
      *
-     * @param data
+     * @param data array byte
      */
     @Override
     public void writePacket(byte[] data) {

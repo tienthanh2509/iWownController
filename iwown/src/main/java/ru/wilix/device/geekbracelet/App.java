@@ -13,6 +13,7 @@ import android.support.v4.app.NotificationCompat;
 import android.widget.Toast;
 
 import ru.wilix.device.geekbracelet.service.BLEService;
+import ru.wilix.device.geekbracelet.utils.CommunicationUtils;
 
 /**
  * Created by Aloyan Dmitry on 29.08.2015
@@ -33,7 +34,7 @@ public class App extends Application {
         App.mContext = getApplicationContext();
         App.sPref = PreferenceManager.getDefaultSharedPreferences(App.mContext);
 
-        if (BLEService.isBluetoothAvailable()) {
+        if (CommunicationUtils.isBluetoothAvailable()) {
             // Create service
             Intent gattServiceIntent = new Intent(this, BLEService.class);
             startService(gattServiceIntent);
