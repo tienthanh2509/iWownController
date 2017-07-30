@@ -1,4 +1,4 @@
-package ru.wilix.device.geekbracelet.i5;
+package ru.wilix.device.geekbracelet.device;
 
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.content.Intent;
@@ -16,13 +16,14 @@ import java.util.HashMap;
 import java.util.UUID;
 
 import ru.wilix.device.geekbracelet.App;
-import ru.wilix.device.geekbracelet.service.BLEService;
 import ru.wilix.device.geekbracelet.BroadcastConstants;
 import ru.wilix.device.geekbracelet.bluetooth.Communication;
+import ru.wilix.device.geekbracelet.common.Constants;
 import ru.wilix.device.geekbracelet.model.DeviceClockAlarm;
 import ru.wilix.device.geekbracelet.model.DeviceInfo;
 import ru.wilix.device.geekbracelet.model.Sport;
 import ru.wilix.device.geekbracelet.receiver.NotificationMonitor;
+import ru.wilix.device.geekbracelet.service.BLEService;
 import ru.wilix.device.geekbracelet.utils.CommunicationUtils;
 import ru.wilix.device.geekbracelet.utils.PebbleBitmapUtil;
 
@@ -31,21 +32,22 @@ import ru.wilix.device.geekbracelet.utils.PebbleBitmapUtil;
  * My swversion: 1.1.0.9 I5
  * DEVICE_POWER﹕ bleAddr: 4d2b2a84bec4 displayWidthFont: 0 model: I5 oadmode: 0 swversion: 1.1.0.9
  */
-public class Device {
-    private static final String TAG = "Device_iWown_i5";
+public class GenericDevice implements Device {
+    private static final String TAG = GenericDevice.class.getName();
     public Communication comm;
     public DeviceInfo deviceInfo;
     private byte[] receiveBuffer;
     private int receiveBufferLength = 0;
     private boolean isDataOver = true;
 
-    public Device(BLEService bleService) {
+    public GenericDevice(BLEService bleService) {
         this.comm = new Communication(bleService, this);
     }
 
     /**
      * Return Firmware version
      */
+    @Override
     public void askFmVersionInfo() {
         writePacket(CommunicationUtils.getDataByte(true, CommunicationUtils.form_Header(0, 0), null));
     }
@@ -53,6 +55,7 @@ public class Device {
     /**
      * Return battery power
      */
+    @Override
     public void askPower() {
         writePacket(CommunicationUtils.getDataByte(true, CommunicationUtils.form_Header(0, 1), null));
     }
@@ -66,6 +69,7 @@ public class Device {
     /**
      * Return device configuration
      */
+    @Override
     public void askConfig() {
         writePacket(CommunicationUtils.getDataByte(true, CommunicationUtils.form_Header(1, 9), null));
     }
@@ -73,6 +77,7 @@ public class Device {
     /**
      * Return User Body parameters
      */
+    @Override
     public void askUserParams() {
         writePacket(CommunicationUtils.getDataByte(true, CommunicationUtils.form_Header(2, 1), null));
     }
@@ -81,6 +86,7 @@ public class Device {
      * Return BLE state
      * TODO need to understand what is this
      */
+    @Override
     public void askBle() {
         writePacket(CommunicationUtils.getDataByte(true, CommunicationUtils.form_Header(1, 3), null));
     }
@@ -88,6 +94,7 @@ public class Device {
     /**
      * Return Daily Sport entries. This entries automatically clear in device on ask
      */
+    @Override
     public void askDailyData() {
         writePacket(CommunicationUtils.getDataByte(true, CommunicationUtils.form_Header(2, 7), null));
     }
@@ -95,6 +102,7 @@ public class Device {
     /**
      * Return device data and time
      */
+    @Override
     public void askDate() {
         writePacket(CommunicationUtils.getDataByte(true, CommunicationUtils.form_Header(1, 1), null));
     }
@@ -103,6 +111,7 @@ public class Device {
      * Return data of local sport. May be it sleep data...
      * TODO Check what is this data means
      */
+    @Override
     public void askLocalSport() {
         writePacket(CommunicationUtils.getDataByte(true, CommunicationUtils.form_Header(2, 5), null));
     }
@@ -111,6 +120,7 @@ public class Device {
      * After subscribe, device will send Sport object on each activity
      * and once in minute if activity don't register
      */
+    @Override
     public void subscribeForSportUpdates() {
         writePacket(CommunicationUtils.getDataByte(true, CommunicationUtils.form_Header(2, 3), null));
     }
@@ -118,12 +128,13 @@ public class Device {
     /**
      * Set date and time to device internal clock
      */
+    @Override
     public void setDate() {
         GregorianCalendar date = new GregorianCalendar();
         ArrayList<Byte> data = new ArrayList<>();
         data.add(((byte) (date.get(Calendar.YEAR) - 2000)));
 
-        String deviceName= App.sPref.getString("device_model", "i5");
+        String deviceName = App.sPref.getString("device_model", "i5");
         if (deviceName.contains("+") || deviceName.contains("I7S2"))
             data.add(((byte) (date.get(Calendar.MONTH))));
         else
@@ -132,6 +143,7 @@ public class Device {
         data.add(((byte) date.get(Calendar.HOUR_OF_DAY)));
         data.add(((byte) date.get(Calendar.MINUTE)));
         data.add(((byte) date.get(Calendar.SECOND)));
+
         writePacket(CommunicationUtils.getDataByte(true, CommunicationUtils.form_Header(1, 0), data));
     }
 
@@ -141,6 +153,7 @@ public class Device {
      * @param alarm     - alarm to write
      * @param sectionId - Available 7 alarms. IDS: 0,1,2,3,4,5,6
      */
+    @Override
     public void setClockAlarm(DeviceClockAlarm alarm, int sectionId) {
         ArrayList<Byte> data = new ArrayList<>();
         data.add((byte) sectionId);
@@ -154,6 +167,7 @@ public class Device {
     /**
      * Unknown command. Call on send configuration params to device
      */
+    @Override
     public void setBle(boolean enabled) {
         ArrayList<Byte> data = new ArrayList<>();
         data.add((byte) 0);
@@ -166,6 +180,7 @@ public class Device {
      *
      * @param enable
      */
+    @Override
     public void setSelfieMode(boolean enable) {
         ArrayList<Byte> data = new ArrayList<>();
         data.add(enable ? (byte) 1 : (byte) 0);
@@ -182,6 +197,7 @@ public class Device {
      * @param age    - age in years. Like 26 years
      * @param goal   - in steps. For example 10000 steps per day
      */
+    @Override
     public void setUserParams(int height, int weight, boolean gender, int age, int goal) {
         ArrayList<Byte> datas = new ArrayList<>();
         datas.add((byte) height);
@@ -207,6 +223,7 @@ public class Device {
      * @param use24hour    - Use 24 hour time format, if false used 12 hour time
      * @param autoSleep    - Enable auto sleep mode when you go to sleep
      */
+    @Override
     public void setConfig(boolean light, boolean gesture, boolean englishUnits,
                           boolean use24hour, boolean autoSleep) {
         ArrayList<Byte> datas = new ArrayList<>();
@@ -239,6 +256,7 @@ public class Device {
      *
      * @param msg - message to show
      */
+    @Override
     public void sendMessage(String msg) {
         sendAlert(msg, Constants.ALERT_TYPE_MESSAGE);
     }
@@ -248,6 +266,7 @@ public class Device {
      *
      * @param msg - mesage to show
      */
+    @Override
     public void sendCall(String msg) {
         sendAlert(msg, Constants.ALERT_TYPE_CALL);
     }
@@ -255,6 +274,7 @@ public class Device {
     /**
      * End vibration and call event started after sendCall command
      */
+    @Override
     public void sendCallEnd() {
         ArrayList<Byte> datas = new ArrayList<>();
         datas.add((byte) 0);
@@ -267,6 +287,7 @@ public class Device {
      * @param msg  - Text message
      * @param type - Type of alert. 1 - Call type, 2 - Message type
      */
+    @Override
     public void sendAlert(String msg, int type) {
         if (msg == null)
             return;
@@ -329,6 +350,7 @@ public class Device {
         comm.WriteDataPacket(tasks);
     }
 
+    @Override
     public void parserAPIv1(BluetoothGattCharacteristic chr) {
         String uuid = chr.getUuid().toString();
         Log.i(TAG, "Parse APIv1 data. UUID:" + uuid);
@@ -478,6 +500,7 @@ public class Device {
         }
     }
 
+    @Override
     public void parserAPIv0(BluetoothGattCharacteristic chr) {
         String uuid = chr.getUuid().toString();
         Log.i(TAG, "Parse APIv0 data. UUID:" + uuid);
@@ -525,6 +548,7 @@ public class Device {
      *
      * @param data
      */
+    @Override
     public void writePacket(byte[] data) {
         comm.WriteDataPacket(new Communication.WriteDataTask(UUID.fromString(Constants.BAND_CHARACTERISTIC_NEW_WRITE), data));
     }

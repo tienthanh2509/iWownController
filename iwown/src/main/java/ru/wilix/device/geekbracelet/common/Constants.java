@@ -1,4 +1,4 @@
-package ru.wilix.device.geekbracelet.i5;
+package ru.wilix.device.geekbracelet.common;
 
 /**
  * Created by Dmitry on 29.08.2015.

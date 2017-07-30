@@ -34,7 +34,7 @@ import java.util.Date;
 import java.util.UUID;
 
 import ru.wilix.device.geekbracelet.App;
-import ru.wilix.device.geekbracelet.i5.Device;
+import ru.wilix.device.geekbracelet.device.GenericDevice;
 
 /**
  * Service for managing connection and data communication with a GATT server hosted on a
@@ -52,7 +52,7 @@ public class BLEService extends Service {
     boolean alreadyChecking = false;
     private BluetoothManager mBluetoothManager;
     private BluetoothAdapter mBluetoothAdapter;
-    private Device device;
+    private GenericDevice device;
     private BluetoothGatt mBluetoothGatt;
 
     public static BLEService getSelf() {
@@ -76,7 +76,7 @@ public class BLEService extends Service {
         super.onCreate();
         self = this;
 
-        this.device = new Device(this);
+        this.device = new GenericDevice(this);
         if (!initialize()) {
             Log.e(TAG, "Unable to initialize Bluetooth");
             return;
@@ -88,7 +88,7 @@ public class BLEService extends Service {
         return super.onStartCommand(intent, flags, startId);
     }
 
-    public Device getDevice() {
+    public GenericDevice getDevice() {
         return this.device;
     }
 
