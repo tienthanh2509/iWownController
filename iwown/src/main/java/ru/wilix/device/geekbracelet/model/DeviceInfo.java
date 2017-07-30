@@ -5,7 +5,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
 
-import ru.wilix.device.geekbracelet.i5.Utils;
+import ru.wilix.device.geekbracelet.utils.CommunicationUtils;
 
 /**
  * Created by Dmitry on 30.08.2015.
@@ -19,14 +19,14 @@ public class DeviceInfo implements Serializable {
 
     public static DeviceInfo fromData(byte[] data) {
         DeviceInfo info = new DeviceInfo();
-        info.setModel(Utils.ascii2String(Arrays.copyOfRange(data, 6, 10)));
+        info.setModel(CommunicationUtils.ascii2String(Arrays.copyOfRange(data, 6, 10)));
         info.setOadmode((data[10] * 255) + data[11]);
         info.setSwversion(data[12] + "." + data[13] + "." + data[14] + "." + data[15]);
-        info.setBleAddr(Utils.byteArrayToString(Arrays.copyOfRange(data, 16, 22)));
+        info.setBleAddr(CommunicationUtils.byteArrayToString(Arrays.copyOfRange(data, 16, 22)));
         if (data.length == 29)
-            info.setDisplayWidthFont(Utils.bytesToInt(Arrays.copyOfRange(data, 28, 29)));
+            info.setDisplayWidthFont(CommunicationUtils.bytesToInt(Arrays.copyOfRange(data, 28, 29)));
         else if (data.length == 28)
-            info.setDisplayWidthFont(Utils.bytesToInt(Arrays.copyOfRange(data, 27, 28)));
+            info.setDisplayWidthFont(CommunicationUtils.bytesToInt(Arrays.copyOfRange(data, 27, 28)));
         return info;
     }
 

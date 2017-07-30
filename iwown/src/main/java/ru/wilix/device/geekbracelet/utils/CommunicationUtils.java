@@ -1,4 +1,4 @@
-package ru.wilix.device.geekbracelet.i5;
+package ru.wilix.device.geekbracelet.utils;
 
 import android.bluetooth.BluetoothGattCharacteristic;
 
@@ -8,7 +8,7 @@ import java.util.GregorianCalendar;
 /**
  * Created by Dmitry on 30.08.2015.
  */
-public class Utils {
+public class CommunicationUtils {
     /**
      * Parse characteristic and return date in seconds
      *

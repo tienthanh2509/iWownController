@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import ru.wilix.device.geekbracelet.App;
-import ru.wilix.device.geekbracelet.BLEService;
+import ru.wilix.device.geekbracelet.service.BLEService;
 
 /**
  * Created by Aloyan Dmitry on 29.08.2015

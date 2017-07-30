@@ -1,4 +1,4 @@
-package ru.wilix.device.geekbracelet.i5;
+package ru.wilix.device.geekbracelet.bluetooth;
 
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCallback;
@@ -14,21 +14,23 @@ import java.util.Date;
 import java.util.UUID;
 
 import ru.wilix.device.geekbracelet.App;
-import ru.wilix.device.geekbracelet.BLEService;
+import ru.wilix.device.geekbracelet.service.BLEService;
 import ru.wilix.device.geekbracelet.BroadcastConstants;
+import ru.wilix.device.geekbracelet.i5.Constants;
+import ru.wilix.device.geekbracelet.i5.Device;
 
 /**
  * Created by Dmitry on 29.08.2015.
  */
 public class Communication extends BluetoothGattCallback {
-    private static final String TAG = "i5Communication";
+    private static final String TAG = Communication.class.getName();
     public static int apiVersion = 1;
     public static long lastDataReceived = 0;
     private static BLEService bleService;
     private Device device;
 
     public Communication(BLEService bleService, Device device) {
-        this.bleService = bleService;
+        Communication.bleService = bleService;
         this.device = device;
     }
 

@@ -28,6 +28,7 @@ import java.util.List;
 
 import ru.wilix.device.geekbracelet.model.DeviceInfo;
 import ru.wilix.device.geekbracelet.receiver.NotificationMonitor;
+import ru.wilix.device.geekbracelet.service.BLEService;
 
 /**
  * Created by Aloyan Dmitry on 16.09.2015

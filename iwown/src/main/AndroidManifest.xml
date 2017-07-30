@@ -68,7 +68,7 @@
             android:label="@string/app_name"/>
 
         <service
-            android:name=".BLEService"
+            android:name=".service.BLEService"
             android:enabled="true"/>
         <service
             android:name=".receiver.NotificationMonitor"

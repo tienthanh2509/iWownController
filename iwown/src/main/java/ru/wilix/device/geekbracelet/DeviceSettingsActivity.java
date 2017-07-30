@@ -16,6 +16,7 @@ import android.widget.Toast;
 import java.util.HashMap;
 
 import ru.wilix.device.geekbracelet.receiver.NotificationMonitor;
+import ru.wilix.device.geekbracelet.service.BLEService;
 
 public class DeviceSettingsActivity extends Activity {
     ProgressDialog dialog;

@@ -12,6 +12,8 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.widget.Toast;
 
+import ru.wilix.device.geekbracelet.service.BLEService;
+
 /**
  * Created by Aloyan Dmitry on 29.08.2015
  */

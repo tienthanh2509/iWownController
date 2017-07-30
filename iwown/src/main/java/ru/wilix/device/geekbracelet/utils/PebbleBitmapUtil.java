@@ -1,4 +1,4 @@
-package ru.wilix.device.geekbracelet.i5;
+package ru.wilix.device.geekbracelet.utils;
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
@@ -22,7 +22,7 @@ import java.nio.ByteOrder;
 import ru.wilix.device.geekbracelet.App;
 import ru.wilix.device.geekbracelet.BuildConfig;
 
-public class PebbleBitmap {
+public class PebbleBitmapUtil {
     public static final String PIXEL_OFF = "0";
     public static final String PIXEL_ON = "1";
     public static final int SETTINGS_DEFAULT_MBR_SIZE = 4096;
@@ -37,7 +37,7 @@ public class PebbleBitmap {
     public int index;
     public int offset;
 
-    private PebbleBitmap(UnsignedInteger _rowLengthBytes, UnsignedInteger _flags, short _x, short _y, short _width, short _height, byte[] _data) {
+    private PebbleBitmapUtil(UnsignedInteger _rowLengthBytes, UnsignedInteger _flags, short _x, short _y, short _width, short _height, byte[] _data) {
         this.offset = 0;
         this.index = 0;
         this.rowLengthBytes = _rowLengthBytes;
@@ -49,7 +49,7 @@ public class PebbleBitmap {
         this.data = _data;
     }
 
-    public static PebbleBitmap fromString(String text, int w, int len) {
+    public static PebbleBitmapUtil fromString(String text, int w, int len) {
         TextPaint textPaint = new TextPaint();
         textPaint.setAntiAlias(true);
         textPaint.setTextSize(14.0f);
@@ -69,7 +69,7 @@ public class PebbleBitmap {
         return fromAndroidBitmap(newBitmap);
     }
 
-    public static PebbleBitmap fromAndroidBitmap(Bitmap bitmap) {
+    public static PebbleBitmapUtil fromAndroidBitmap(Bitmap bitmap) {
         int width = bitmap.getWidth();
         int height = bitmap.getHeight();
         int rowLengthBytes = width / 8;
@@ -107,10 +107,10 @@ public class PebbleBitmap {
         if (!bitmap.isRecycled())
             bitmap.recycle();
         System.gc();
-        return new PebbleBitmap(UnsignedInteger.fromIntBits(rowLengthBytes), UnsignedInteger.fromIntBits(SETTINGS_DEFAULT_MBR_SIZE), (short) 0, (short) 0, (short) width, (short) height, data.array());
+        return new PebbleBitmapUtil(UnsignedInteger.fromIntBits(rowLengthBytes), UnsignedInteger.fromIntBits(SETTINGS_DEFAULT_MBR_SIZE), (short) 0, (short) 0, (short) width, (short) height, data.array());
     }
 
-    public static PebbleBitmap fromPng(InputStream paramInputStream) throws IOException {
+    public static PebbleBitmapUtil fromPng(InputStream paramInputStream) throws IOException {
         return fromAndroidBitmap(BitmapFactory.decodeStream(paramInputStream));
     }
 }

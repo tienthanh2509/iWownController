@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-import ru.wilix.device.geekbracelet.i5.Utils;
+import ru.wilix.device.geekbracelet.utils.CommunicationUtils;
 
 /**
  * Created by Dmitry on 30.08.2015.
@@ -34,25 +34,25 @@ public class Sport implements Serializable {
         try {
             Sport sport = new Sport();
             if (type != TYPE_LOCAL_SPORT) {
-                sport.setBcc(Utils.bytesToInt(Arrays.copyOfRange(data, 4, 5)));
-                sport.setYear(Utils.bytesToInt(Arrays.copyOfRange(data, 7, 8)));
-                sport.setMonth(Utils.bytesToInt(Arrays.copyOfRange(data, 6, 7)));
-                sport.setDay(Utils.bytesToInt(Arrays.copyOfRange(data, 5, 6)));
-                sport.setSteps(Utils.bytesToInt(Arrays.copyOfRange(data, 8, 12)));
-                sport.setDistance(((float) Utils.bytesToInt(Arrays.copyOfRange(data, 12, 16))) * 0.1f);
-                sport.setCalorie(((float) Utils.bytesToInt(Arrays.copyOfRange(data, 16, 20))) * 0.1f);
+                sport.setBcc(CommunicationUtils.bytesToInt(Arrays.copyOfRange(data, 4, 5)));
+                sport.setYear(CommunicationUtils.bytesToInt(Arrays.copyOfRange(data, 7, 8)));
+                sport.setMonth(CommunicationUtils.bytesToInt(Arrays.copyOfRange(data, 6, 7)));
+                sport.setDay(CommunicationUtils.bytesToInt(Arrays.copyOfRange(data, 5, 6)));
+                sport.setSteps(CommunicationUtils.bytesToInt(Arrays.copyOfRange(data, 8, 12)));
+                sport.setDistance(((float) CommunicationUtils.bytesToInt(Arrays.copyOfRange(data, 12, 16))) * 0.1f);
+                sport.setCalorie(((float) CommunicationUtils.bytesToInt(Arrays.copyOfRange(data, 16, 20))) * 0.1f);
                 sport.setType(type);
             } else {
-                sport.setBcc(Utils.bytesToInt(Arrays.copyOfRange(data, 4, 5)));
-                sport.setMinute(Utils.bytesToInt(Arrays.copyOfRange(data, 5, 6)));
-                sport.setHour(Utils.bytesToInt(Arrays.copyOfRange(data, 6, 7)));
-                sport.setDay(Utils.bytesToInt(Arrays.copyOfRange(data, 7, 8)) + 1);
-                sport.setMonth(Utils.bytesToInt(Arrays.copyOfRange(data, 8, 9)) + 1);
-                sport.setYear(Utils.bytesToInt(Arrays.copyOfRange(data, 9, 10)) + 2000);
-                sport.setFlag(Utils.bytesToInt(Arrays.copyOfRange(data, 10, 11)));
-                sport.setSteps(Utils.bytesToInt(Arrays.copyOfRange(data, 11, 13)));
-                sport.setDistance(((float) Utils.bytesToInt(Arrays.copyOfRange(data, 13, 15))) * 0.1f);
-                sport.setCalorie(((float) Utils.bytesToInt(Arrays.copyOfRange(data, 15, 17))) * 0.1f);
+                sport.setBcc(CommunicationUtils.bytesToInt(Arrays.copyOfRange(data, 4, 5)));
+                sport.setMinute(CommunicationUtils.bytesToInt(Arrays.copyOfRange(data, 5, 6)));
+                sport.setHour(CommunicationUtils.bytesToInt(Arrays.copyOfRange(data, 6, 7)));
+                sport.setDay(CommunicationUtils.bytesToInt(Arrays.copyOfRange(data, 7, 8)) + 1);
+                sport.setMonth(CommunicationUtils.bytesToInt(Arrays.copyOfRange(data, 8, 9)) + 1);
+                sport.setYear(CommunicationUtils.bytesToInt(Arrays.copyOfRange(data, 9, 10)) + 2000);
+                sport.setFlag(CommunicationUtils.bytesToInt(Arrays.copyOfRange(data, 10, 11)));
+                sport.setSteps(CommunicationUtils.bytesToInt(Arrays.copyOfRange(data, 11, 13)));
+                sport.setDistance(((float) CommunicationUtils.bytesToInt(Arrays.copyOfRange(data, 13, 15))) * 0.1f);
+                sport.setCalorie(((float) CommunicationUtils.bytesToInt(Arrays.copyOfRange(data, 15, 17))) * 0.1f);
                 sport.setType(TYPE_LOCAL_SPORT);
             }
             return sport;

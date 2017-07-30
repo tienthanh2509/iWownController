@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package ru.wilix.device.geekbracelet;
+package ru.wilix.device.geekbracelet.service;
 
 import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
 
+import ru.wilix.device.geekbracelet.App;
 import ru.wilix.device.geekbracelet.i5.Device;
 
 /**
