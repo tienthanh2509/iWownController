@@ -20,7 +20,7 @@ import ru.wilix.device.geekbracelet.model.AppNotification;
 public class NotificationMonitor extends NotificationListenerService {
     public static StatusBarNotification lastSbn;
 
-    public static boolean settingsKeepForeign = false;
+    public static boolean settingsKeepForeign = true;
     public static int settingsDelay = 0;
 
     @Override
