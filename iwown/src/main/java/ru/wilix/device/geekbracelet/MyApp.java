@@ -48,11 +48,11 @@ public class MyApp extends Application {
                     new Intent(this, MainActivity.class), 0);
 
             Notification notification = new NotificationCompat.Builder(this)
-                    .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher))
-                    .setSmallIcon(R.drawable.ic_watch_24dp_black)
-                    .setContentText("WiliX Controller")
-                    .setContentTitle("WiliX Controller")
-                    .setTicker("WiliX Controller")
+                    .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher))
+                    .setSmallIcon(R.drawable.ic_android_head_24dp_black)
+                    .setContentText("IwownFit Controller")
+                    .setContentTitle("IwownFit Controller")
+                    .setTicker("IwownFit Controller")
                     .setPriority(Notification.PRIORITY_LOW)
                     .setAutoCancel(false)
                     .setContentIntent(pi)
