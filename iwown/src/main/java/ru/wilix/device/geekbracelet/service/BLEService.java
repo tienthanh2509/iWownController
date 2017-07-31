@@ -32,7 +32,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
 
-import ru.wilix.device.geekbracelet.App;
+import ru.wilix.device.geekbracelet.MyApp;
 import ru.wilix.device.geekbracelet.bluetooth.Communication;
 import ru.wilix.device.geekbracelet.common.WristbandModel;
 import ru.wilix.device.geekbracelet.device.Device;
@@ -68,9 +68,9 @@ public class BLEService extends Service {
         super.onCreate();
         self = this;
 
-        if (App.sPref.getString("device_model", "").equals(WristbandModel.MODEL_I7S2))
+        if (MyApp.sPref.getString("device_model", "").equals(WristbandModel.MODEL_I7S2))
             this.device = new I7s2Device(this);
-        else if (App.sPref.getString("device_model", "").equals(WristbandModel.MODEL_I5PLUS))
+        else if (MyApp.sPref.getString("device_model", "").equals(WristbandModel.MODEL_I5PLUS))
             this.device = new I5Device(this);
         else
             this.device = new GenericDevice(this);
@@ -79,7 +79,7 @@ public class BLEService extends Service {
             Log.e(TAG, "Unable to initialize Bluetooth");
             return;
         }
-        this.connect(App.sPref.getString("DEVICE_ADDR", ""), true);
+        this.connect(MyApp.sPref.getString("DEVICE_ADDR", ""), true);
     }
 
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -130,14 +130,14 @@ public class BLEService extends Service {
      */
     public boolean connect(final String address, boolean forceConnect) {
         if (mBluetoothAdapter == null || address == null ||
-                (App.sPref.getString("DEVICE_ADDR", "").length() <= 0) && address.length() <= 0) {
+                (MyApp.sPref.getString("DEVICE_ADDR", "").length() <= 0) && address.length() <= 0) {
             Log.w(TAG, "BluetoothAdapter not initialized or unspecified address.");
             return false;
         }
 
         // Previously connected device.  Try to reconnect.
-        if (!forceConnect && App.sPref.getString("DEVICE_ADDR", "").length() > 0 &&
-                address.equals(App.sPref.getString("DEVICE_ADDR", "")) && mBluetoothGatt != null) {
+        if (!forceConnect && MyApp.sPref.getString("DEVICE_ADDR", "").length() > 0 &&
+                address.equals(MyApp.sPref.getString("DEVICE_ADDR", "")) && mBluetoothGatt != null) {
             Log.d(TAG, "Trying to use an existing mBluetoothGatt for connection.");
             //this.autoReconnectOnTimeout();
             if (mBluetoothGatt.connect()) {
@@ -221,12 +221,12 @@ public class BLEService extends Service {
                         return;
                     alreadyChecking = true;
                     Thread.sleep(60000);
-                    if (App.sPref.getString("DEVICE_ADDR", "").length() > 0) {
+                    if (MyApp.sPref.getString("DEVICE_ADDR", "").length() > 0) {
                         if (BLEService.getSelf() != null && BLEService.getSelf().getDevice() != null) {
                             // FIXME bad practice use comm object
                             if (Communication.lastDataReceived - (new Date().getTime()) >= 120000) {
                                 BLEService.getSelf().disconnect();
-                                BLEService.getSelf().connect(App.sPref.getString("DEVICE_ADDR", ""), true);
+                                BLEService.getSelf().connect(MyApp.sPref.getString("DEVICE_ADDR", ""), true);
                                 checkConnection();
                                 return;
                             }

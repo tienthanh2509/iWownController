@@ -149,7 +149,7 @@ public class DeviceScanActivity extends ListActivity {
             mScanning = false;
         }
 
-        SharedPreferences.Editor ed = App.sPref.edit();
+        SharedPreferences.Editor ed = MyApp.sPref.edit();
         ed.putString("DEVICE_ADDR", device.getAddress());
         ed.putString("DEVICE_NAME", device.getName());
         ed.apply();

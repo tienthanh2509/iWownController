@@ -4,7 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import ru.wilix.device.geekbracelet.App;
+import ru.wilix.device.geekbracelet.MyApp;
 import ru.wilix.device.geekbracelet.service.BLEService;
 
 /**
@@ -18,7 +18,7 @@ public class DeskClockAlarm extends BroadcastReceiver {
     public static boolean isAlarm = false;
 
     public void onReceive(Context context, Intent intent) {
-        if (!App.sPref.getBoolean("cbx_notice_deskclock", false))
+        if (!MyApp.sPref.getBoolean("cbx_notice_deskclock", false))
             return;
 
         if (BLEService.getSelf() == null || BLEService.getSelf().getDevice() == null)

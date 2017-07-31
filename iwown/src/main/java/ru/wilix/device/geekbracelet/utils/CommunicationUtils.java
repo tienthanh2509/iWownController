@@ -8,7 +8,7 @@ import android.content.pm.PackageManager;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
-import ru.wilix.device.geekbracelet.App;
+import ru.wilix.device.geekbracelet.MyApp;
 
 /**
  * Created by Dmitry on 30.08.2015.
@@ -139,12 +139,12 @@ public class CommunicationUtils {
     }
 
     public static boolean isBluetoothAvailable() {
-        if (!App.mContext.getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE))
+        if (!MyApp.mContext.getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE))
             return false;
 
         // Initializes a Bluetooth adapter.  For API level 18 and above, get a reference to
         // BluetoothAdapter through BluetoothManager.
-        final BluetoothManager bluetoothManager = (BluetoothManager) App.mContext.getSystemService(Context.BLUETOOTH_SERVICE);
+        final BluetoothManager bluetoothManager = (BluetoothManager) MyApp.mContext.getSystemService(Context.BLUETOOTH_SERVICE);
         // Checks if Bluetooth is supported on the device.
         return bluetoothManager.getAdapter() != null;
     }

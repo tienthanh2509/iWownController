@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
 
-import ru.wilix.device.geekbracelet.App;
+import ru.wilix.device.geekbracelet.MyApp;
 import ru.wilix.device.geekbracelet.BroadcastConstants;
 import ru.wilix.device.geekbracelet.common.Constants;
 import ru.wilix.device.geekbracelet.device.Device;
@@ -40,14 +40,14 @@ public class Communication extends BluetoothGattCallback {
         if (newState == BluetoothProfile.STATE_CONNECTED) {
             BLEService.getSelf().mConnectionState = BLEService.STATE_CONNECTED;
             intent = new Intent(BroadcastConstants.ACTION_GATT_CONNECTED);
-            App.mContext.sendBroadcast(intent);
+            MyApp.mContext.sendBroadcast(intent);
 
             Log.i(TAG, "Connected to GATT server.");
             Log.i(TAG, "Attempting to start service discovery.");
             BLEService.getSelf().getmBluetoothGatt().discoverServices();
         } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
             intent = new Intent(BroadcastConstants.ACTION_GATT_DISCONNECTED);
-            App.mContext.sendBroadcast(intent);
+            MyApp.mContext.sendBroadcast(intent);
 
             Log.i(TAG, "Disconnected from GATT server.");
             BLEService.getSelf().mConnectionState = BLEService.STATE_DISCONNECTED;
@@ -92,7 +92,7 @@ public class Communication extends BluetoothGattCallback {
                 Log.e(TAG, "Can't set descriptor!");
 
             Intent intent = new Intent(BroadcastConstants.ACTION_GATT_SERVICES_DISCOVERED);
-            App.mContext.sendBroadcast(intent);
+            MyApp.mContext.sendBroadcast(intent);
         } else {
             Log.w(TAG, "onServicesDiscovered received: " + status);
         }

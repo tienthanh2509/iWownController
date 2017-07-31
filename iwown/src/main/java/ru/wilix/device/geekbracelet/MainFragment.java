@@ -78,7 +78,7 @@ public class MainFragment extends Fragment {
                             BLEService.getSelf().getDevice().setDate();
                             break;
                         case BroadcastConstants.ACTION_CONNECT_TO_GFIT:
-                            if (App.sPref.getBoolean("fit_connected", false) == false) {
+                            if (MyApp.sPref.getBoolean("fit_connected", false) == false) {
                                 Toast.makeText(getActivity(), getResources().getString(R.string.google_fit_not_connected),
                                         Toast.LENGTH_SHORT).show();
                                 ((Button) container.findViewById(R.id.connectToFitBtn))
@@ -136,7 +136,7 @@ public class MainFragment extends Fragment {
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SharedPreferences.Editor ed = App.sPref.edit();
+                SharedPreferences.Editor ed = MyApp.sPref.edit();
 
                 ed.putBoolean("cbx_notice_call",
                         ((CheckBox) container.findViewById(R.id.cbx_notice_call)).isChecked());
@@ -149,7 +149,7 @@ public class MainFragment extends Fragment {
                 ed.putBoolean("cbx_notice_deskclock",
                         ((CheckBox) container.findViewById(R.id.cbx_notice_deskclock)).isChecked());
                 ed.apply();
-                App.loadProperties();
+                MyApp.loadProperties();
             }
         };
         ((CheckBox) container.findViewById(R.id.cbx_notice_call)).setOnClickListener(listener);
@@ -196,7 +196,7 @@ public class MainFragment extends Fragment {
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                SharedPreferences sp = App.sPref;
+                SharedPreferences sp = MyApp.sPref;
                 ((CheckBox) container.findViewById(R.id.cbx_notice_call)).setChecked(sp.getBoolean("cbx_notice_call", false));
                 ((CheckBox) container.findViewById(R.id.cbx_action_locator_on_long)).setChecked(sp.getBoolean("cbx_action_locator_on_long", false));
                 ((CheckBox) container.findViewById(R.id.cbx_action_mute_onclick)).setChecked(sp.getBoolean("cbx_action_mute_onclick", false));
@@ -204,7 +204,7 @@ public class MainFragment extends Fragment {
                 ((CheckBox) container.findViewById(R.id.cbx_notice_deskclock)).setChecked(sp.getBoolean("cbx_notice_deskclock", false));
 
                 NotificationMonitor.settingsKeepForeign = sp.getBoolean("notif_foreign", false);
-                NotificationMonitor.settingsDelay = Integer.parseInt(App.sPref.getString("notif_delay", "0"));
+                NotificationMonitor.settingsDelay = Integer.parseInt(MyApp.sPref.getString("notif_delay", "0"));
             }
         });
     }
@@ -269,7 +269,7 @@ public class MainFragment extends Fragment {
         } else {
             ((Button) container.findViewById(R.id.connectBtn)).setText(getResources().getString(R.string.device_not_connected));
             if (BLEService.getSelf() != null)
-                BLEService.getSelf().connect(App.sPref.getString("DEVICE_ADDR", ""), true);
+                BLEService.getSelf().connect(MyApp.sPref.getString("DEVICE_ADDR", ""), true);
         }
     }
 

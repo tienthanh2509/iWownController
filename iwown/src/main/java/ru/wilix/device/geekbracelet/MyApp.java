@@ -12,27 +12,31 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.widget.Toast;
 
+import com.squareup.leakcanary.LeakCanary;
+
 import ru.wilix.device.geekbracelet.service.BLEService;
 import ru.wilix.device.geekbracelet.utils.CommunicationUtils;
 
 /**
  * Created by Aloyan Dmitry on 29.08.2015
  */
-public class App extends Application {
+public class MyApp extends Application {
     public static Context mContext;
     public static SharedPreferences sPref;
 
     public static void loadProperties() {
-        SharedPreferences sp = App.sPref;
+        SharedPreferences sp = MyApp.sPref;
         if (sp.getBoolean("fit_connected", false))
-            GoogleFitConnector.connect(App.mContext);
+            GoogleFitConnector.connect(MyApp.mContext);
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
-        App.mContext = getApplicationContext();
-        App.sPref = PreferenceManager.getDefaultSharedPreferences(App.mContext);
+        loadLeakCanary();
+
+        MyApp.mContext = getApplicationContext();
+        MyApp.sPref = PreferenceManager.getDefaultSharedPreferences(MyApp.mContext);
 
         if (CommunicationUtils.isBluetoothAvailable()) {
             // Create service
@@ -57,8 +61,20 @@ public class App extends Application {
             ((NotificationManager) getSystemService(NOTIFICATION_SERVICE)).notify(0, notification);
             loadProperties();
         } else {
-            Toast.makeText(App.mContext, R.string.ble_not_supported, Toast.LENGTH_SHORT).show();
+            Toast.makeText(MyApp.mContext, R.string.ble_not_supported, Toast.LENGTH_SHORT).show();
             android.os.Process.killProcess(android.os.Process.myPid());
         }
+    }
+
+    /**
+     * LeakCanary will automatically show a notification when an activity memory leak is detected in your debug build.
+     */
+    private void loadLeakCanary() {
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            // This process is dedicated to LeakCanary for heap analysis.
+            // You should not init your app in this process.
+            return;
+        }
+        LeakCanary.install(this);
     }
 }

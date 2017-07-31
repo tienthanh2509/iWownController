@@ -10,7 +10,7 @@ import android.telephony.TelephonyManager;
 
 import java.lang.reflect.Method;
 
-import ru.wilix.device.geekbracelet.App;
+import ru.wilix.device.geekbracelet.MyApp;
 import ru.wilix.device.geekbracelet.BroadcastConstants;
 import ru.wilix.device.geekbracelet.service.BLEService;
 
@@ -61,7 +61,7 @@ public class CallReceiver extends BroadcastReceiver {
     }
 
     public void onReceive(Context context, Intent intent) {
-        if (!App.sPref.getBoolean("cbx_notice_call", false))
+        if (!MyApp.sPref.getBoolean("cbx_notice_call", false))
             return;
 
         if (BLEService.getSelf() == null || BLEService.getSelf().getDevice() == null)

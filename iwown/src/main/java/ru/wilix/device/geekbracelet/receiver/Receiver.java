@@ -7,7 +7,7 @@ import android.content.res.AssetFileDescriptor;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 
-import ru.wilix.device.geekbracelet.App;
+import ru.wilix.device.geekbracelet.MyApp;
 import ru.wilix.device.geekbracelet.BroadcastConstants;
 import ru.wilix.device.geekbracelet.GoogleFitConnector;
 import ru.wilix.device.geekbracelet.model.Sport;
@@ -30,7 +30,7 @@ public class Receiver extends BroadcastReceiver {
 
         switch (action) {
             case "android.intent.action.BOOT_COMPLETED":
-                // App should init
+                // MyApp should init
                 break;
             case BroadcastConstants.ACTION_NEW_NOTIFICATION_RECEIVED:
                 NotificationMonitor.Notif nf = (NotificationMonitor.Notif) intent.getSerializableExtra("data");
@@ -41,7 +41,7 @@ public class Receiver extends BroadcastReceiver {
                 hasIncomingCall = true;
                 stopLocatior(context); // If we receive call and locate the phone, need end locator
 
-                if (App.sPref.getBoolean("cbx_action_mute_onclick", false))
+                if (MyApp.sPref.getBoolean("cbx_action_mute_onclick", false))
                     BLEService.getSelf().getDevice().setSelfieMode(true); // Set one click mode for mute
 
                 String callid = intent.getStringExtra("data");
@@ -57,7 +57,7 @@ public class Receiver extends BroadcastReceiver {
                 break;
             case BroadcastConstants.ACTION_SELFIE:
                 // If one click and we have ringing, need to mute
-                if (hasIncomingCall && App.sPref.getBoolean("cbx_action_mute_onclick", false)) {
+                if (hasIncomingCall && MyApp.sPref.getBoolean("cbx_action_mute_onclick", false)) {
                     AudioManager am = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
                     am.adjustVolume(AudioManager.ADJUST_LOWER, AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE);
                     CallReceiver.rejectCall(context, 1);
@@ -70,13 +70,13 @@ public class Receiver extends BroadcastReceiver {
                 break;
             case BroadcastConstants.ACTION_PLAYPAUSE:
                 // Call reject
-                if (hasIncomingCall && App.sPref.getBoolean("cbx_action_reject_on_long", false)) {
+                if (hasIncomingCall && MyApp.sPref.getBoolean("cbx_action_reject_on_long", false)) {
                     CallReceiver.rejectCall(context, 0);
                     return;
                 }
 
                 // Locator service
-                if (!hasIncomingCall && App.sPref.getBoolean("cbx_action_locator_on_long", false)) {
+                if (!hasIncomingCall && MyApp.sPref.getBoolean("cbx_action_locator_on_long", false)) {
                     startLocator(context);
                     BLEService.getSelf().getDevice().setSelfieMode(true);
                     return;
@@ -85,17 +85,17 @@ public class Receiver extends BroadcastReceiver {
 
             case BroadcastConstants.ACTION_SPORT_DATA:
                 Sport sport = (Sport) intent.getSerializableExtra("data");
-                if (App.sPref.getBoolean("fit_connected", false))
+                if (MyApp.sPref.getBoolean("fit_connected", false))
                     GoogleFitConnector.publish(sport);
                 break;
 
             case BroadcastConstants.ACTION_CONNECT_TO_GFIT:
-                if (App.sPref.getBoolean("fit_connected", false))
+                if (MyApp.sPref.getBoolean("fit_connected", false))
                     if (BLEService.getSelf() != null && BLEService.getSelf().getDevice() != null)
                         BLEService.getSelf().getDevice().subscribeForSportUpdates();
                 break;
             case BroadcastConstants.ACTION_GATT_CONNECTED:
-                if (App.sPref.getBoolean("fit_connected", false))
+                if (MyApp.sPref.getBoolean("fit_connected", false))
                     BLEService.getSelf().getDevice().subscribeForSportUpdates();
                 break;
         }

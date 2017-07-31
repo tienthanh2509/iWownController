@@ -26,7 +26,7 @@ public class DeviceSettingsActivity extends Activity {
         @Override
         public void onReceive(Context context, Intent intent) {
             packetIterator++;
-            SharedPreferences.Editor ed = App.sPref.edit();
+            SharedPreferences.Editor ed = MyApp.sPref.edit();
             final String action = intent.getAction();
             switch (action) {
                 case BroadcastConstants.ACTION_BLE_DATA:
@@ -139,25 +139,25 @@ public class DeviceSettingsActivity extends Activity {
     private class Saver implements Runnable {
         @Override
         public void run() {
-            int goal_high = Integer.parseInt(App.sPref.getString("dev_conf_goal", "1000"));
-            int weight = Integer.parseInt(App.sPref.getString("dev_conf_weight", "70"));
-            int height = Integer.parseInt(App.sPref.getString("dev_conf_height", "180"));
-            int age = Integer.parseInt(App.sPref.getString("dev_conf_age", "26"));
-            int gender = Integer.parseInt(App.sPref.getString("dev_conf_gender", "0"));
+            int goal_high = Integer.parseInt(MyApp.sPref.getString("dev_conf_goal", "1000"));
+            int weight = Integer.parseInt(MyApp.sPref.getString("dev_conf_weight", "70"));
+            int height = Integer.parseInt(MyApp.sPref.getString("dev_conf_height", "180"));
+            int age = Integer.parseInt(MyApp.sPref.getString("dev_conf_age", "26"));
+            int gender = Integer.parseInt(MyApp.sPref.getString("dev_conf_gender", "0"));
             BLEService.getSelf().getDevice().setUserParams(height, weight, gender > 0, age, goal_high);
 
-            boolean light = App.sPref.getBoolean("dev_conf_light", false);
-            boolean gesture = App.sPref.getBoolean("dev_conf_gesture", false);
-            boolean englishunits = App.sPref.getBoolean("dev_conf_englishunits", false);
-            boolean use24hours = App.sPref.getBoolean("dev_conf_use24hours", false);
-            boolean autosleep = App.sPref.getBoolean("dev_conf_autosleep", false);
+            boolean light = MyApp.sPref.getBoolean("dev_conf_light", false);
+            boolean gesture = MyApp.sPref.getBoolean("dev_conf_gesture", false);
+            boolean englishunits = MyApp.sPref.getBoolean("dev_conf_englishunits", false);
+            boolean use24hours = MyApp.sPref.getBoolean("dev_conf_use24hours", false);
+            boolean autosleep = MyApp.sPref.getBoolean("dev_conf_autosleep", false);
             BLEService.getSelf().getDevice().setConfig(light, gesture, englishunits,
                     use24hours, autosleep);
 
-            BLEService.getSelf().getDevice().setBle(App.sPref.getBoolean("dev_conf_ble", false));
+            BLEService.getSelf().getDevice().setBle(MyApp.sPref.getBoolean("dev_conf_ble", false));
 
-            NotificationMonitor.settingsKeepForeign = App.sPref.getBoolean("notif_foreign", false);
-            NotificationMonitor.settingsDelay = Integer.parseInt(App.sPref.getString("notif_delay", "0"));
+            NotificationMonitor.settingsKeepForeign = MyApp.sPref.getBoolean("notif_foreign", false);
+            NotificationMonitor.settingsDelay = Integer.parseInt(MyApp.sPref.getString("notif_delay", "0"));
 
         }
     }

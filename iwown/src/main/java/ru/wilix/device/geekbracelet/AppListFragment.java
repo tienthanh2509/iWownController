@@ -19,7 +19,7 @@ public class AppListFragment extends ListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        packageManager = App.mContext.getPackageManager();
+        packageManager = MyApp.mContext.getPackageManager();
         new LoadApplications().execute();
     }
 

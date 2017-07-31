@@ -44,7 +44,7 @@ public class GoogleFitConnector {
                         Log.i(TAG, "Connected!!!");
                         // Now you can make calls to the Fitness APIs.  What to do?
                         // Look at some data!!
-                        SharedPreferences.Editor ed = App.sPref.edit();
+                        SharedPreferences.Editor ed = MyApp.sPref.edit();
                         ed.putBoolean("fit_connected", true);
                         ed.apply();
 
@@ -61,7 +61,7 @@ public class GoogleFitConnector {
                         } else if (i == GoogleApiClient.ConnectionCallbacks.CAUSE_SERVICE_DISCONNECTED) {
                             Log.i(TAG, "Connection lost.  Reason: Service Disconnected");
                         }
-                        SharedPreferences.Editor ed = App.sPref.edit();
+                        SharedPreferences.Editor ed = MyApp.sPref.edit();
                         ed.putBoolean("fit_connected", false);
                         ed.apply();
 
@@ -75,7 +75,7 @@ public class GoogleFitConnector {
                     public void onConnectionFailed(ConnectionResult result) {
                         Log.i(TAG, "Connection failed. Cause: " + result.toString());
                         if (!result.hasResolution()) {
-                            SharedPreferences.Editor ed = App.sPref.edit();
+                            SharedPreferences.Editor ed = MyApp.sPref.edit();
                             ed.putBoolean("fit_connected", false);
                             ed.apply();
                             // Show the localized error dialog
@@ -116,7 +116,7 @@ public class GoogleFitConnector {
 
         if (mClient == null || !mClient.isConnected()) {
             Log.i(TAG, "Fit client not connected. Try connect");
-            connect(App.mContext);
+            connect(MyApp.mContext);
             return;
         }
 
@@ -127,7 +127,7 @@ public class GoogleFitConnector {
         protected Void doInBackground(Sport... sports) {
             Sport sport = sports[0];
             DataSource DSTEP_SOURCE = new DataSource.Builder()
-                    .setAppPackageName(App.mContext.getPackageName())
+                    .setAppPackageName(MyApp.mContext.getPackageName())
                     .setDataType(DataType.TYPE_STEP_COUNT_DELTA)
                     .setName("GeekFit Steps")
                     .setStreamName("GeekFit Steps")
@@ -135,7 +135,7 @@ public class GoogleFitConnector {
                     .build();
 
             DataSource DDISTANCE_SOURCE = new DataSource.Builder()
-                    .setAppPackageName(App.mContext.getPackageName())
+                    .setAppPackageName(MyApp.mContext.getPackageName())
                     .setDataType(DataType.TYPE_DISTANCE_DELTA)
                     .setName("GeekFit Distance")
                     .setStreamName("GeekFit Distance")
@@ -143,7 +143,7 @@ public class GoogleFitConnector {
                     .build();
 
             DataSource DCALORIE_SOURCE = new DataSource.Builder()
-                    .setAppPackageName(App.mContext.getPackageName())
+                    .setAppPackageName(MyApp.mContext.getPackageName())
                     .setDataType(DataType.TYPE_CALORIES_EXPENDED)
                     .setName("GeekFit Calorie")
                     .setStreamName("GeekFit Calorie")

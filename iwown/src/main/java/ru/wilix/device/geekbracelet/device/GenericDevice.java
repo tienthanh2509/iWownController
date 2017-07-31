@@ -15,7 +15,7 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.UUID;
 
-import ru.wilix.device.geekbracelet.App;
+import ru.wilix.device.geekbracelet.MyApp;
 import ru.wilix.device.geekbracelet.BroadcastConstants;
 import ru.wilix.device.geekbracelet.bluetooth.Communication;
 import ru.wilix.device.geekbracelet.common.Constants;
@@ -377,7 +377,7 @@ public class GenericDevice implements Device {
                             case Constants.APIv1_DATA_DEVICE_INFO:
                                 DeviceInfo info = DeviceInfo.fromData(this.receiveBuffer);
 
-                                SharedPreferences.Editor ed = App.sPref.edit();
+                                SharedPreferences.Editor ed = MyApp.sPref.edit();
                                 ed.putString("device_model", info.getModel());
                                 ed.putString("device_sw", info.getSwversion());
                                 ed.apply();
@@ -385,21 +385,21 @@ public class GenericDevice implements Device {
                                 Log.d(TAG, "DEVICE_INFO: " + info.toString());
                                 intent = new Intent(BroadcastConstants.ACTION_DEVICE_INFO);
                                 intent.putExtra("data", DeviceInfo.fromData(this.receiveBuffer));
-                                App.mContext.sendBroadcast(intent);
+                                MyApp.mContext.sendBroadcast(intent);
                                 break;
                             case Constants.APIv1_DATA_DEVICE_POWER:
                                 int power = CommunicationUtils.bytesToInt(Arrays.copyOfRange(this.receiveBuffer, 4, 5));
                                 Log.d(TAG, "DEVICE_POWER: " + power + "%");
                                 intent = new Intent(BroadcastConstants.ACTION_DEVICE_POWER);
                                 intent.putExtra("data", power);
-                                App.mContext.sendBroadcast(intent);
+                                MyApp.mContext.sendBroadcast(intent);
                                 break;
                             case Constants.APIv1_DATA_DEVICE_BLE:
                                 int ble = CommunicationUtils.bytesToInt(Arrays.copyOfRange(this.receiveBuffer, 4, 5));
                                 Log.d(TAG, "DEVICE_BLE: " + (ble > 0 ? "enabled" : "disabled"));
                                 intent = new Intent(BroadcastConstants.ACTION_BLE_DATA);
                                 intent.putExtra("data", ble);
-                                App.mContext.sendBroadcast(intent);
+                                MyApp.mContext.sendBroadcast(intent);
                                 break;
                             case Constants.APIv1_DATA_USER_PARAMS:
                                 HashMap<String, Integer> userData = new HashMap<>();
@@ -417,7 +417,7 @@ public class GenericDevice implements Device {
                                         " Goal: " + (userData.get("goal_high") + "." + userData.get("goal_low")));
                                 intent = new Intent(BroadcastConstants.ACTION_USER_BODY_DATA);
                                 intent.putExtra("data", userData);
-                                App.mContext.sendBroadcast(intent);
+                                MyApp.mContext.sendBroadcast(intent);
                                 break;
                             case Constants.APIv1_DATA_DEVICE_CONFIG:
                                 HashMap<String, Integer> configData = new HashMap<>();
@@ -435,13 +435,13 @@ public class GenericDevice implements Device {
                                         " autoSleep: " + configData.get("autoSleep"));
                                 intent = new Intent(BroadcastConstants.ACTION_DEVICE_CONF_DATA);
                                 intent.putExtra("data", configData);
-                                App.mContext.sendBroadcast(intent);
+                                MyApp.mContext.sendBroadcast(intent);
                                 break;
                             case Constants.APIv1_DATA_DEVICE_DATE:
                                 int year = CommunicationUtils.bytesToInt(Arrays.copyOfRange(this.receiveBuffer, 4, 5)) + 2000;
                                 int month;
-                                if (App.sPref.getString("device_model", "i5").contains("+")
-                                        || App.sPref.getString("device_model", "i5").contains("I7S2"))
+                                if (MyApp.sPref.getString("device_model", "i5").contains("+")
+                                        || MyApp.sPref.getString("device_model", "i5").contains("I7S2"))
                                     month = CommunicationUtils.bytesToInt(Arrays.copyOfRange(this.receiveBuffer, 5, 6));
                                 else
                                     month = CommunicationUtils.bytesToInt(Arrays.copyOfRange(this.receiveBuffer, 5, 6)) + 1;
@@ -453,35 +453,35 @@ public class GenericDevice implements Device {
                                 Log.d(TAG, "DEVICE_DATE: " + new Date(timestamp).toString());
                                 intent = new Intent(BroadcastConstants.ACTION_DATE_DATA);
                                 intent.putExtra("data", timestamp);
-                                App.mContext.sendBroadcast(intent);
+                                MyApp.mContext.sendBroadcast(intent);
                                 break;
                             case Constants.APIv1_DATA_SUBSCRIBE_FOR_SPORT:
                                 Sport dailySport = Sport.fromBytes(this.receiveBuffer, Sport.TYPE_DAILY_A);
                                 Log.d(TAG, "DAILY_SPORT: " + dailySport);
                                 intent = new Intent(BroadcastConstants.ACTION_SPORT_DATA);
                                 intent.putExtra("data", dailySport);
-                                App.mContext.sendBroadcast(intent);
+                                MyApp.mContext.sendBroadcast(intent);
                                 break;
                             case Constants.APIv1_DATA_LOCAL_SPORT:
                                 Sport localSport = Sport.fromBytes(this.receiveBuffer, Sport.TYPE_LOCAL_SPORT);
                                 Log.d(TAG, "LOCAL_SPORT: " + localSport);
                                 intent = new Intent(BroadcastConstants.ACTION_SPORT_DATA);
                                 intent.putExtra("data", localSport);
-                                App.mContext.sendBroadcast(intent);
+                                MyApp.mContext.sendBroadcast(intent);
                                 break;
                             case Constants.APIv1_DATA_DAILY_SPORT2:
                                 Sport dailySport2 = Sport.fromBytes(this.receiveBuffer, Sport.TYPE_DAILY_B);
                                 Log.d(TAG, "DAILY_SPORT2: " + dailySport2);
                                 intent = new Intent(BroadcastConstants.ACTION_SPORT_DATA);
                                 intent.putExtra("data", dailySport2);
-                                App.mContext.sendBroadcast(intent);
+                                MyApp.mContext.sendBroadcast(intent);
                                 break;
                             case Constants.APIv1_DATA_SELFIE:
                                 int code = CommunicationUtils.bytesToInt(Arrays.copyOfRange(this.receiveBuffer, 4, 5));
                                 Log.d(TAG, "SELFIE_DATA: " + Integer.toString(code));
                                 intent = new Intent((code == 1) ? BroadcastConstants.ACTION_SELFIE : BroadcastConstants.ACTION_PLAYPAUSE);
                                 intent.putExtra("data", code);
-                                App.mContext.sendBroadcast(intent);
+                                MyApp.mContext.sendBroadcast(intent);
                             default:
                                 String buff = "";
                                 Log.i(TAG, "Receiver unknown APIv1 command");
@@ -510,34 +510,34 @@ public class GenericDevice implements Device {
                 sp = Sport.fromCharacteristic(chr, false);
                 intent = new Intent(BroadcastConstants.ACTION_SPORT_DATA);
                 intent.putExtra("data", sp);
-                App.mContext.sendBroadcast(intent);
+                MyApp.mContext.sendBroadcast(intent);
                 break;
             case Constants.BAND_CHARACTERISTIC_DAILY:
                 sp = Sport.fromCharacteristic(chr, true);
                 intent = new Intent(BroadcastConstants.ACTION_DAILY_DATA);
                 intent.putExtra("data", sp);
-                App.mContext.sendBroadcast(intent);
+                MyApp.mContext.sendBroadcast(intent);
                 break;
             case Constants.BAND_CHARACTERISTIC_DATE:
                 long time = CommunicationUtils.parseDateCharacteristic(chr);
                 intent = new Intent(BroadcastConstants.ACTION_DATE_DATA);
                 intent.putExtra("data", time);
-                App.mContext.sendBroadcast(intent);
+                MyApp.mContext.sendBroadcast(intent);
                 break;
             case Constants.BAND_CHARACTERISTIC_SEDENTARY:
                 intent = new Intent(BroadcastConstants.ACTION_SEDENTARY_DATA);
                 intent.putExtra("data", chr.getValue());
-                App.mContext.sendBroadcast(intent);
+                MyApp.mContext.sendBroadcast(intent);
                 break;
             case Constants.BAND_CHARACTERISTIC_ALARM:
                 intent = new Intent(BroadcastConstants.ACTION_ALARM_DATA);
                 intent.putExtra("data", chr.getValue());
-                App.mContext.sendBroadcast(intent);
+                MyApp.mContext.sendBroadcast(intent);
                 break;
             case Constants.BAND_CHARACTERISTIC_PAIR:
                 intent = new Intent(BroadcastConstants.ACTION_PAIR_DATA);
                 intent.putExtra("data", chr.getValue());
-                App.mContext.sendBroadcast(intent);
+                MyApp.mContext.sendBroadcast(intent);
                 break;
         }
     }
