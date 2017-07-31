@@ -10,7 +10,7 @@ import android.util.Log;
 
 import java.io.Serializable;
 
-import ru.wilix.device.geekbracelet.BroadcastConstants;
+import ru.wilix.device.geekbracelet.common.BroadcastConstants;
 import ru.wilix.device.geekbracelet.common.Constants;
 import ru.wilix.device.geekbracelet.model.AppNotification;
 

@@ -1,4 +1,4 @@
-package ru.wilix.device.geekbracelet;
+package ru.wilix.device.geekbracelet.ui;
 
 import android.Manifest;
 import android.app.AlertDialog;
@@ -26,6 +26,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import ru.wilix.device.geekbracelet.GoogleFitConnector;
+import ru.wilix.device.geekbracelet.MyApp;
+import ru.wilix.device.geekbracelet.R;
+import ru.wilix.device.geekbracelet.common.BroadcastConstants;
 import ru.wilix.device.geekbracelet.model.DeviceInfo;
 import ru.wilix.device.geekbracelet.receiver.NotificationMonitor;
 import ru.wilix.device.geekbracelet.service.BLEService;

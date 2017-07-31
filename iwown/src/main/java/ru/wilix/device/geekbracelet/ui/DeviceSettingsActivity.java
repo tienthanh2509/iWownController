@@ -1,4 +1,4 @@
-package ru.wilix.device.geekbracelet;
+package ru.wilix.device.geekbracelet.ui;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -15,6 +15,9 @@ import android.widget.Toast;
 
 import java.util.HashMap;
 
+import ru.wilix.device.geekbracelet.MyApp;
+import ru.wilix.device.geekbracelet.R;
+import ru.wilix.device.geekbracelet.common.BroadcastConstants;
 import ru.wilix.device.geekbracelet.receiver.NotificationMonitor;
 import ru.wilix.device.geekbracelet.service.BLEService;
 

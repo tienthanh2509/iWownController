@@ -1,8 +1,10 @@
-package ru.wilix.device.geekbracelet;
+package ru.wilix.device.geekbracelet.ui;
 
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.os.Bundle;
+
+import ru.wilix.device.geekbracelet.R;
 
 public class MainActivity extends Activity {
     @Override

@@ -8,7 +8,7 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 
 import ru.wilix.device.geekbracelet.MyApp;
-import ru.wilix.device.geekbracelet.BroadcastConstants;
+import ru.wilix.device.geekbracelet.common.BroadcastConstants;
 import ru.wilix.device.geekbracelet.GoogleFitConnector;
 import ru.wilix.device.geekbracelet.model.Sport;
 import ru.wilix.device.geekbracelet.service.BLEService;

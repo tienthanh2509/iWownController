@@ -23,6 +23,7 @@ import com.google.android.gms.fitness.data.Field;
 
 import java.util.concurrent.TimeUnit;
 
+import ru.wilix.device.geekbracelet.common.BroadcastConstants;
 import ru.wilix.device.geekbracelet.model.Sport;
 
 public class GoogleFitConnector {

@@ -1,4 +1,4 @@
-package ru.wilix.device.geekbracelet;
+package ru.wilix.device.geekbracelet.ui;
 
 import android.app.Activity;
 import android.app.ListActivity;
@@ -23,6 +23,8 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import ru.wilix.device.geekbracelet.MyApp;
+import ru.wilix.device.geekbracelet.R;
 import ru.wilix.device.geekbracelet.service.BLEService;
 
 public class DeviceScanActivity extends ListActivity {

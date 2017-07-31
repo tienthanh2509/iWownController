@@ -55,7 +55,7 @@
         </receiver>
 
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.MainActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -64,7 +64,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".DeviceScanActivity"
+            android:name=".ui.DeviceScanActivity"
             android:label="@string/app_name"/>
 
         <service
@@ -80,7 +80,7 @@
         </service>
 
         <activity
-            android:name=".DeviceSettingsActivity"
+            android:name=".ui.DeviceSettingsActivity"
             android:label="@string/title_activity_device_settings">
         </activity>
 

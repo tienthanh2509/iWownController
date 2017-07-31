@@ -1,4 +1,4 @@
-package ru.wilix.device.geekbracelet;
+package ru.wilix.device.geekbracelet.ui;
 
 import android.app.ListFragment;
 import android.app.ProgressDialog;
@@ -9,6 +9,9 @@ import android.os.Bundle;
 
 import java.util.List;
 
+import ru.wilix.device.geekbracelet.AppsAdapter;
+import ru.wilix.device.geekbracelet.MyApp;
+import ru.wilix.device.geekbracelet.R;
 import ru.wilix.device.geekbracelet.model.AppNotification;
 
 public class AppListFragment extends ListFragment {

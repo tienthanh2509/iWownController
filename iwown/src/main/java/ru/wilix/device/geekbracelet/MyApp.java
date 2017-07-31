@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.squareup.leakcanary.LeakCanary;
 
 import ru.wilix.device.geekbracelet.service.BLEService;
+import ru.wilix.device.geekbracelet.ui.MainActivity;
 import ru.wilix.device.geekbracelet.utils.CommunicationUtils;
 
 /**

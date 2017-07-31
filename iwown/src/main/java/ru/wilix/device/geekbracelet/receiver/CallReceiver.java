@@ -11,7 +11,7 @@ import android.telephony.TelephonyManager;
 import java.lang.reflect.Method;
 
 import ru.wilix.device.geekbracelet.MyApp;
-import ru.wilix.device.geekbracelet.BroadcastConstants;
+import ru.wilix.device.geekbracelet.common.BroadcastConstants;
 import ru.wilix.device.geekbracelet.service.BLEService;
 
 /**
