@@ -14,6 +14,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,7 +39,6 @@ import ru.wilix.device.geekbracelet.service.BLEService;
  * Created by Aloyan Dmitry on 16.09.2015
  */
 public class MainFragment extends Fragment {
-    private Button connectBtn;
     private View container;
     // Handles various events fired by the Service.
     // ACTION_GATT_CONNECTED: connected to a GATT server.
@@ -128,7 +128,7 @@ public class MainFragment extends Fragment {
     }
 
     private void initViews() {
-        connectBtn = (Button) container.findViewById(R.id.connectBtn);
+        Button connectBtn = (Button) container.findViewById(R.id.connectBtn);
         connectBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -156,13 +156,13 @@ public class MainFragment extends Fragment {
                 MyApp.loadProperties();
             }
         };
-        ((CheckBox) container.findViewById(R.id.cbx_notice_call)).setOnClickListener(listener);
-        ((CheckBox) container.findViewById(R.id.cbx_action_locator_on_long)).setOnClickListener(listener);
-        ((CheckBox) container.findViewById(R.id.cbx_action_mute_onclick)).setOnClickListener(listener);
-        ((CheckBox) container.findViewById(R.id.cbx_action_reject_on_long)).setOnClickListener(listener);
-        ((CheckBox) container.findViewById(R.id.cbx_notice_deskclock)).setOnClickListener(listener);
+        container.findViewById(R.id.cbx_notice_call).setOnClickListener(listener);
+        container.findViewById(R.id.cbx_action_locator_on_long).setOnClickListener(listener);
+        container.findViewById(R.id.cbx_action_mute_onclick).setOnClickListener(listener);
+        container.findViewById(R.id.cbx_action_reject_on_long).setOnClickListener(listener);
+        container.findViewById(R.id.cbx_notice_deskclock).setOnClickListener(listener);
 
-        ((Button) container.findViewById(R.id.settingsBtn)).setOnClickListener(new View.OnClickListener() {
+        container.findViewById(R.id.settingsBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent in = new Intent(getActivity(), DeviceSettingsActivity.class);
@@ -170,14 +170,14 @@ public class MainFragment extends Fragment {
             }
         });
 
-        ((Button) container.findViewById(R.id.connectToFitBtn)).setOnClickListener(new View.OnClickListener() {
+        container.findViewById(R.id.connectToFitBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 GoogleFitConnector.connect(getActivity());
             }
         });
 
-        ((Button) container.findViewById(R.id.show_applist_btn)).setOnClickListener(new View.OnClickListener() {
+        container.findViewById(R.id.show_applist_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getFragmentManager().beginTransaction()
@@ -219,11 +219,7 @@ public class MainFragment extends Fragment {
         String packageName = getActivity().getPackageName();
 
         // check to see if the enabledNotificationListeners String contains our package name
-        if (enabledNotificationListeners == null || !enabledNotificationListeners.contains(packageName))
-            // in this situation we know that the user has not granted the app the Notification access permission
-            return false;
-        else
-            return true;
+        return !(enabledNotificationListeners == null || !enabledNotificationListeners.contains(packageName));
     }
 
     private void askNotificationAccess() {
@@ -252,7 +248,7 @@ public class MainFragment extends Fragment {
                     BLEService.getSelf().getDevice().askPower();
                     Thread.sleep(500);
                     BLEService.getSelf().getDevice().askDate();
-                } catch (Exception e) {
+                } catch (Exception ignored) {
                 }
             }
         }).start();
@@ -282,7 +278,7 @@ public class MainFragment extends Fragment {
         super.onPause();
         try {
             getActivity().unregisterReceiver(mGattUpdateReceiver);
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
     }
 
@@ -336,7 +332,6 @@ public class MainFragment extends Fragment {
                                     557);
                         }
                     }).show();
-            return;
         }
     }
 
@@ -353,7 +348,7 @@ public class MainFragment extends Fragment {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
             case 557: {
                 boolean allGrunded = true;

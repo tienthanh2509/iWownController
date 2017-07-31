@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">GeekBracelet</string>
+    <string name="app_name">Geek Bracelet</string>
     <string name="ble_not_supported">BLE is not supported</string>
     <string name="connected">Connected</string>
     <string name="connecting_to_fit">Connectiong to Google Fit</string>

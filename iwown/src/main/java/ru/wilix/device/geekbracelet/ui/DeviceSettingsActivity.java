@@ -11,6 +11,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import java.util.HashMap;
@@ -21,7 +22,7 @@ import ru.wilix.device.geekbracelet.common.BroadcastConstants;
 import ru.wilix.device.geekbracelet.receiver.NotificationMonitor;
 import ru.wilix.device.geekbracelet.service.BLEService;
 
-public class DeviceSettingsActivity extends Activity {
+public class DeviceSettingsActivity extends AppCompatActivity {
     ProgressDialog dialog;
     IntentFilter inFilter;
     private int packetIterator = 0;
