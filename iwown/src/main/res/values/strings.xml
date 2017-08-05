@@ -2,15 +2,16 @@
 <resources>
     <string name="app_name">Bracelet Controller</string>
 
-    <string name="ble_not_supported">BLE is not supported</string>
-    <string name="connected">Connected</string>
-    <string name="connecting_to_fit">Connectiong to Google Fit</string>
+    <string name="device_connected">Connected</string>
     <string name="device_not_connected">Not connected</string>
+    <string name="device_not_setup">No device</string>
+
     <string name="device_settings_device_not_connected">Device not connected</string>
+    <string name="ble_not_supported">BLE is not supported</string>
+    <string name="connecting_to_fit">Connectiong to Google Fit</string>
     <string name="device_settings_wait_device_alert">Retriving data from device</string>
     <string name="system_notice_need_notification_access">For enable retrieve notifications from your mobile to bracelet you should enable access to system notifications. Open settings?</string>
     <string name="dialog_warning">Warning</string>
-    <string name="disconnected">Disconnected</string>
     <string name="error_bluetooth_not_supported">Bluetooth not supported</string>
     <string name="google_fit_connected">Google Fit connected, sport data will be stored to Fit</string>
     <string name="google_fit_not_connected">Can\'t connect to Google Fit</string>

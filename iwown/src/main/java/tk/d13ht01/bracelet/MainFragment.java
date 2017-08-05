@@ -51,14 +51,13 @@ public class MainFragment extends Fragment {
                     final String action = in.getAction();
                     switch (action) {
                         case BroadcastConstants.ACTION_GATT_CONNECTED:
-                            txtConnectStatus.setText("XXX is connected!");
                             updateDeviceStatus(0);
                             break;
                         case BroadcastConstants.ACTION_GATT_DISCONNECTED:
-                            txtConnectStatus.setText("Device is lost connection!");
                             updateDeviceStatus(1);
                             break;
                         case BroadcastConstants.ACTION_GATT_SERVICES_DISCOVERED:
+                            updateDeviceStatus(0);
                             requestDeviceInfo();
                             break;
                         case BroadcastConstants.ACTION_DEVICE_INFO:
@@ -168,10 +167,8 @@ public class MainFragment extends Fragment {
         txtConnectStatusIcon = (ImageView) view.findViewById(R.id.status_icon);
 
         if (MyApp.getPreferences().getString("DEVICE_ADDR", "").equals("")) {
-            txtConnectStatus.setText("No device");
             updateDeviceStatus(2);
         } else {
-            txtConnectStatus.setText("Device is lost connection!");
             updateDeviceStatus(1);
         }
     }
@@ -185,10 +182,10 @@ public class MainFragment extends Fragment {
         if (BLEService.getSelf() != null &&
                 BLEService.getSelf().getmBluetoothGatt() != null &&
                 BLEService.getSelf().getmBluetoothGatt().getDevice() != null) {
-//            txtBraceletModel.setText(BLEService.getSelf().getmBluetoothGatt().getDevice().getName());
+            updateDeviceStatus(0);
             requestDeviceInfo();
         } else {
-//            ((Button) container.findViewById(R.id.connectBtn)).setText(getResources().getString(R.string.device_not_connected));
+            updateDeviceStatus(1);
             if (BLEService.getSelf() != null)
                 BLEService.getSelf().connect(MyApp.mPref.getString("DEVICE_ADDR", ""), true);
         }
@@ -239,19 +236,25 @@ public class MainFragment extends Fragment {
      */
     private void updateDeviceStatus(int code) {
         switch (code) {
+            case 3:
+                txtConnectStatus.setText("Updating...");
+                break;
             case 0: {
+                txtConnectStatus.setText(String.format("%s is connected!", BLEService.getSelf().getmBluetoothGatt().getDevice().getName()));
                 txtConnectStatus.setTextColor(ContextCompat.getColor(activity, R.color.darker_green));
                 txtConnectContainer.setBackgroundColor(ContextCompat.getColor(activity, R.color.darker_green));
                 txtConnectStatusIcon.setImageDrawable(ContextCompat.getDrawable(activity, R.drawable.ic_check_circle_84dp_white));
                 break;
             }
             case 1: {
+                txtConnectStatus.setText(R.string.device_not_connected);
                 txtConnectStatus.setTextColor(ContextCompat.getColor(activity, R.color.amber_500));
                 txtConnectContainer.setBackgroundColor(ContextCompat.getColor(activity, R.color.amber_500));
                 txtConnectStatusIcon.setImageDrawable(ContextCompat.getDrawable(activity, R.drawable.ic_warning_84dp_white));
                 break;
             }
             case 2: {
+                txtConnectStatus.setText(R.string.device_not_setup);
                 txtConnectStatus.setTextColor(ContextCompat.getColor(activity, R.color.warning));
                 txtConnectContainer.setBackgroundColor(ContextCompat.getColor(activity, R.color.warning));
                 txtConnectStatusIcon.setImageDrawable(ContextCompat.getDrawable(activity, R.drawable.ic_error_84dp_white));
