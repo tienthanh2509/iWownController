@@ -5,7 +5,7 @@ This application under development and testing stage.
 Follow me in Twitter https://twitter.com/wilixlead
 
 You can just install this app from Google Play
-https://play.google.com/store/apps/details?id=ru.wilix.device.geekbracelet
+https://play.google.com/store/apps/details?id=tk.d13ht01.bracelet
 
 Now supported stock cyanogenmod and google default alarms. You can find alarm by link:
 https://play.google.com/store/apps/details?id=com.google.android.deskclock

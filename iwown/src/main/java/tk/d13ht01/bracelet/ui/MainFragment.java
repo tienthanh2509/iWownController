@@ -1,0 +1,219 @@
+package tk.d13ht01.bracelet.ui;
+
+
+import android.app.Activity;
+import android.app.Fragment;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.Date;
+
+import tk.d13ht01.bracelet.MyApp;
+import tk.d13ht01.bracelet.R;
+import tk.d13ht01.bracelet.common.BroadcastConstants;
+import tk.d13ht01.bracelet.model.DeviceInfo;
+import tk.d13ht01.bracelet.service.BLEService;
+
+public class MainFragment extends Fragment {
+    private static final String TAG = MainFragment.class.getName();
+
+    private Activity activity;
+
+    private TextView txtBraceletModel, txtBraceletFirmware, txtBraceletBattery, txtBraceletTime;
+    private TextView txtConnectStatus;
+    private View txtConnectContainer;
+    private ImageView txtConnectStatusIcon;
+
+    /**
+     * Handles various events fired by the Service.
+     * ACTION_GATT_CONNECTED: connected to a GATT server.
+     * ACTION_GATT_DISCONNECTED: disconnected from a GATT server.
+     * ACTION_GATT_SERVICES_DISCOVERED: discovered GATT services.
+     */
+    private final BroadcastReceiver mGattUpdateReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(final Context context, Intent intent) {
+            final Intent in = intent;
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    final String action = in.getAction();
+                    switch (action) {
+                        case BroadcastConstants.ACTION_GATT_CONNECTED:
+                            txtConnectStatus.setText("XXX is connected!");
+                            txtConnectStatus.setTextColor(ContextCompat.getColor(activity, R.color.darker_green));
+                            txtConnectContainer.setBackgroundColor(ContextCompat.getColor(activity, R.color.darker_green));
+                            txtConnectStatusIcon.setImageDrawable(ContextCompat.getDrawable(activity, R.drawable.ic_check_circle));
+                            break;
+                        case BroadcastConstants.ACTION_GATT_DISCONNECTED:
+                            txtConnectStatus.setText("Device is lost connection!");
+                            txtConnectStatus.setTextColor(ContextCompat.getColor(activity, R.color.amber_500));
+                            txtConnectContainer.setBackgroundColor(ContextCompat.getColor(activity, R.color.amber_500));
+                            txtConnectStatusIcon.setImageDrawable(ContextCompat.getDrawable(activity, R.drawable.ic_warning));
+                            break;
+                        case BroadcastConstants.ACTION_GATT_SERVICES_DISCOVERED:
+                            requestDeviceInfo();
+                            break;
+                        case BroadcastConstants.ACTION_DEVICE_INFO:
+                            final DeviceInfo info = (DeviceInfo) in.getSerializableExtra("data");
+                            txtBraceletModel.setText(info.getModel());
+                            txtBraceletFirmware.setText(info.getSwversion());
+                            break;
+                        case BroadcastConstants.ACTION_DEVICE_POWER:
+                            txtBraceletBattery.setText(in.getIntExtra("data", 0) + "%");
+                            break;
+                        case BroadcastConstants.ACTION_DATE_DATA:
+                            long timestamp = in.getLongExtra("data", 0);
+                            if (timestamp <= 0)
+                                txtBraceletTime.setText(getResources().getText(R.string.label_wrong_time));
+                            else {
+                                CharSequence dt = android.text.format.DateFormat.format("dd/MM/yyyy HH:mm", new Date(timestamp));
+                                txtBraceletTime.setText(dt);
+                            }
+                            BLEService.getSelf().getDevice().setDate();
+                            break;
+                        case BroadcastConstants.ACTION_CONNECT_TO_GFIT:
+//                            if (MyApp.mPref.getBoolean("fit_connected", false) == false) {
+//                                Toast.makeText(getActivity(), getResources().getString(R.string.google_fit_not_connected),
+//                                        Toast.LENGTH_SHORT).show();
+////                                ((Button) container.findViewById(R.id.connectToFitBtn))
+////                                        .setText(getResources().getString(R.string.connect_to_fit));
+//                                return;
+//                            }
+//
+//                            Toast.makeText(getActivity(), getResources().getString(R.string.google_fit_connected),
+//                                    Toast.LENGTH_SHORT).show();
+//                            ((Button) container.findViewById(R.id.connectToFitBtn))
+//                                    .setText(getResources().getString(R.string.reconnect_to_fit));
+//                            if (BLEService.getSelf() == null || BLEService.getSelf().getDevice() == null)
+//                                return;
+//
+////                            BLEService.getSelf().getDevice().askDailyData();
+//                            BLEService.getSelf().getDevice().subscribeForSportUpdates();
+                            break;
+                    }
+                }
+            });
+        }
+    };
+
+    public static IntentFilter gattIntentFilter() {
+        final IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(BroadcastConstants.ACTION_GATT_CONNECTED);
+        intentFilter.addAction(BroadcastConstants.ACTION_GATT_DISCONNECTED);
+        intentFilter.addAction(BroadcastConstants.ACTION_GATT_SERVICES_DISCOVERED);
+
+        intentFilter.addAction(BroadcastConstants.ACTION_DEVICE_INFO);
+        intentFilter.addAction(BroadcastConstants.ACTION_DEVICE_POWER);
+        intentFilter.addAction(BroadcastConstants.ACTION_DATE_DATA);
+        intentFilter.addAction(BroadcastConstants.ACTION_CONNECT_TO_GFIT);
+
+        return intentFilter;
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        activity = getActivity();
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_main, container, false);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        activity.registerReceiver(mGattUpdateReceiver, gattIntentFilter());
+
+        View view = getView();
+
+        if(view == null) {
+            Toast.makeText(activity, "getView failed!", Toast.LENGTH_LONG).show();
+            activity.finish();
+            return;
+        }
+
+        txtBraceletModel = (TextView) view.findViewById(R.id.bracelet_model);
+        txtBraceletFirmware = (TextView) view.findViewById(R.id.bracelet_firmware);
+        txtBraceletBattery = (TextView) view.findViewById(R.id.bracelet_battery_level);
+        txtBraceletTime = (TextView) view.findViewById(R.id.bracelet_time);
+
+        txtConnectStatus = (TextView) view.findViewById(R.id.connect_status);
+        txtConnectContainer = view.findViewById(R.id.status_container);
+        txtConnectStatusIcon = (ImageView) view.findViewById(R.id.status_icon);
+
+        if(MyApp.getPreferences().getString("DEVICE_ADDR", "").equals("")) {
+            txtConnectStatus.setText("No device");
+            txtConnectStatus.setTextColor(ContextCompat.getColor(activity, R.color.warning));
+            txtConnectContainer.setBackgroundColor(ContextCompat.getColor(activity, R.color.warning));
+            txtConnectStatusIcon.setImageDrawable(ContextCompat.getDrawable(activity, R.drawable.ic_error));
+        } else {
+            txtConnectStatus.setText("Device is lost connection!");
+            txtConnectStatus.setTextColor(ContextCompat.getColor(activity, R.color.amber_500));
+            txtConnectContainer.setBackgroundColor(ContextCompat.getColor(activity, R.color.amber_500));
+            txtConnectStatusIcon.setImageDrawable(ContextCompat.getDrawable(activity, R.drawable.ic_warning));
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        activity.registerReceiver(mGattUpdateReceiver, gattIntentFilter());
+
+        if (BLEService.getSelf() != null &&
+                BLEService.getSelf().getmBluetoothGatt() != null &&
+                BLEService.getSelf().getmBluetoothGatt().getDevice() != null) {
+//            txtBraceletModel.setText(BLEService.getSelf().getmBluetoothGatt().getDevice().getName());
+            requestDeviceInfo();
+        } else {
+//            ((Button) container.findViewById(R.id.connectBtn)).setText(getResources().getString(R.string.device_not_connected));
+            if (BLEService.getSelf() != null)
+                BLEService.getSelf().connect(MyApp.mPref.getString("DEVICE_ADDR", ""), true);
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        try {
+            activity.unregisterReceiver(mGattUpdateReceiver);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void onDestroy() {
+        super.onDestroy();
+    }
+
+    /**
+     * Send request basic data to bracelet
+     */
+    private void requestDeviceInfo() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    BLEService.getSelf().getDevice().askFmVersionInfo();
+                    Thread.sleep(500);
+                    BLEService.getSelf().getDevice().askPower();
+                    Thread.sleep(500);
+                    BLEService.getSelf().getDevice().askDate();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+}
