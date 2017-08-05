@@ -19,8 +19,8 @@ import java.math.BigInteger;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
-import tk.d13ht01.bracelet.MyApp;
 import tk.d13ht01.bracelet.BuildConfig;
+import tk.d13ht01.bracelet.MyApp;
 
 public class PebbleBitmapUtil {
     public static final String PIXEL_OFF = "0";

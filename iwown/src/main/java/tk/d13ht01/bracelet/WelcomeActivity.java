@@ -1,7 +1,8 @@
-package tk.d13ht01.bracelet.ui;
+package tk.d13ht01.bracelet;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,8 +19,6 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
 import android.widget.LinearLayout;
-
-import tk.d13ht01.bracelet.R;
 
 public class WelcomeActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
     private static final String SELECTED_ITEM_ID = "SELECTED_ITEM_ID";
@@ -131,15 +130,24 @@ public class WelcomeActivity extends BaseActivity implements NavigationView.OnNa
         final View elevation = findViewById(R.id.elevation);
         Fragment navFragment = null;
         switch (itemId) {
-            case R.id.nav_item_main:
+            case R.id.nav_item_home:
                 mPrevSelectedId = itemId;
                 setTitle(R.string.app_name);
                 navFragment = new MainFragment();
                 break;
-//            case R.id.nav_item_about:
-//                startActivity(new Intent(this, AboutActivity.class));
-//                mNavigationView.getMenu().findItem(mPrevSelectedId).setChecked(true);
-//                return;
+            case R.id.nav_item_push_notification_settings:
+                mPrevSelectedId = itemId;
+                setTitle(R.string.app_name);
+                navFragment = new PushNotificationSettingFragment();
+                break;
+            case R.id.nav_item_support:
+                startActivity(new Intent(this, SupportActivity.class));
+                mNavigationView.getMenu().findItem(mPrevSelectedId).setChecked(true);
+                return;
+            case R.id.nav_item_about:
+                startActivity(new Intent(this, AboutActivity.class));
+                mNavigationView.getMenu().findItem(mPrevSelectedId).setChecked(true);
+                return;
         }
 
         final LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, dp(4));

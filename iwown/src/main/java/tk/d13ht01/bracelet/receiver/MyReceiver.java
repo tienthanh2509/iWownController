@@ -11,10 +11,10 @@ import java.util.Objects;
 
 import tk.d13ht01.bracelet.MyApp;
 import tk.d13ht01.bracelet.common.BroadcastConstants;
-import tk.d13ht01.bracelet.GoogleFitConnector;
 import tk.d13ht01.bracelet.model.Notification;
 import tk.d13ht01.bracelet.model.Sport;
 import tk.d13ht01.bracelet.service.BLEService;
+import tk.d13ht01.bracelet.service.GoogleFitConnector;
 
 /**
  * Created by Aloyan Dmitry on 30.08.2015

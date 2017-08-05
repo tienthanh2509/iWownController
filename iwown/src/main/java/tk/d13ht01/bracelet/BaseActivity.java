@@ -1,11 +1,10 @@
-package tk.d13ht01.bracelet.ui;
+package tk.d13ht01.bracelet;
 
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.StringRes;
 import android.support.v7.app.AppCompatActivity;
 
-import tk.d13ht01.bracelet.R;
 import tk.d13ht01.bracelet.utils.ThemeUtil;
 
 /**

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group
+        android:id="@+id/main_items"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_item_home"
+            android:icon="@drawable/ic_home_24dp_gray"
+            android:title="@string/nav_item_main"/>
+    </group>
+    <group
+        android:id="@+id/option_items"
+        android:checkableBehavior="all">
+        <item
+            android:id="@+id/nav_item_push_notification_settings"
+            android:icon="@drawable/ic_message_bulleted_24dp_gray"
+            android:title="@string/nav_item_push_mesg"/>
+        <item
+            android:id="@+id/nav_item_support"
+            android:icon="@drawable/ic_support_24dp_gray"
+            android:title="@string/nav_item_support"/>
+        <item
+            android:id="@+id/nav_item_about"
+            android:icon="@drawable/ic_about_24dp_gray"
+            android:title="@string/nav_item_about"/>
+    </group>
+</menu>

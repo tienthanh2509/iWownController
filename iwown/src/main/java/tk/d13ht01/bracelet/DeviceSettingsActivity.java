@@ -1,4 +1,4 @@
-package tk.d13ht01.bracelet.ui;
+package tk.d13ht01.bracelet;
 
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
@@ -15,11 +15,9 @@ import android.widget.Toast;
 
 import java.util.HashMap;
 
-import tk.d13ht01.bracelet.MyApp;
-import tk.d13ht01.bracelet.R;
 import tk.d13ht01.bracelet.common.BroadcastConstants;
-import tk.d13ht01.bracelet.service.NotificationMonitorService;
 import tk.d13ht01.bracelet.service.BLEService;
+import tk.d13ht01.bracelet.service.NotificationMonitorService;
 
 public class DeviceSettingsActivity extends AppCompatActivity {
     ProgressDialog dialog;

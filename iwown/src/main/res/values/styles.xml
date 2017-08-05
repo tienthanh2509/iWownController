@@ -2,21 +2,21 @@
 <resources>
 
     <!-- Base application light theme. -->
-    <style name="Theme.XposedInstaller.Light.Base" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme.Light.Base" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
     <!-- Base application dark theme. -->
-    <style name="Theme.XposedInstaller.Dark.Base" parent="Theme.AppCompat.NoActionBar">
+    <style name="AppTheme.Dark.Base" parent="Theme.AppCompat.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="Theme.XposedInstaller.Light" parent="Theme.XposedInstaller.Light.Base">
-        <item name="android:windowBackground">@color/background_material_light</item>
+    <style name="AppTheme.Light" parent="AppTheme.Light.Base">
+        <!--<item name="android:windowBackground">@color/background_material_light</item>-->
         <item name="sticky_header_background">@color/sticky_header_background_light</item>
         <item name="list_download_item_color">@color/list_download_item_color_light</item>
         <item name="background_card">@drawable/background_card_light</item>
@@ -26,8 +26,8 @@
         <item name="download_status_installed">@android:color/holo_orange_dark</item>
     </style>
 
-    <style name="Theme.XposedInstaller.Dark" parent="Theme.XposedInstaller.Dark.Base">
-        <item name="android:windowBackground">@color/background_material_dark</item>
+    <style name="AppTheme.Dark" parent="AppTheme.Dark.Base">
+        <!--<item name="android:windowBackground">@color/background_material_dark</item>-->
         <item name="sticky_header_background">@color/sticky_header_background_dark</item>
         <item name="list_download_item_color">@color/list_download_item_color_dark</item>
         <item name="background_card">@drawable/background_card_dark</item>
@@ -37,21 +37,21 @@
         <item name="download_status_installed">@android:color/holo_orange_light</item>
     </style>
 
-    <style name="Theme.XposedInstaller.Dark.Black" parent="Theme.XposedInstaller.Dark">
+    <style name="AppTheme.Dark.Black" parent="AppTheme.Dark">
         <item name="android:windowBackground">@color/app_background_black</item>
         <item name="list_download_item_color">@color/list_download_item_color_black</item>
         <item name="background_card">@drawable/background_card_black</item>
         <item name="background_card_pressed">@drawable/background_card_pressed_black</item>
     </style>
 
-    <style name="Theme.XposedInstaller.Toolbar" parent="ThemeOverlay.AppCompat.Light">
+    <style name="AppTheme.Toolbar" parent="ThemeOverlay.AppCompat.Light">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="android:textColorPrimary">@android:color/white</item>
         <item name="actionMenuTextColor">@android:color/white</item>
         <item name="android:textColorSecondary">@android:color/white</item>
     </style>
 
-    <style name="Theme.XposedInstaller.Transparent" parent="Theme.AppCompat.NoActionBar">
+    <style name="AppTheme.Transparent" parent="Theme.AppCompat.NoActionBar">
     </style>
 
 </resources>

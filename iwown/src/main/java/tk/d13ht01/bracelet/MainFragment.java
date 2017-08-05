@@ -1,4 +1,4 @@
-package tk.d13ht01.bracelet.ui;
+package tk.d13ht01.bracelet;
 
 
 import android.app.Activity;
@@ -10,6 +10,9 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -18,8 +21,6 @@ import android.widget.Toast;
 
 import java.util.Date;
 
-import tk.d13ht01.bracelet.MyApp;
-import tk.d13ht01.bracelet.R;
 import tk.d13ht01.bracelet.common.BroadcastConstants;
 import tk.d13ht01.bracelet.model.DeviceInfo;
 import tk.d13ht01.bracelet.service.BLEService;
@@ -51,15 +52,11 @@ public class MainFragment extends Fragment {
                     switch (action) {
                         case BroadcastConstants.ACTION_GATT_CONNECTED:
                             txtConnectStatus.setText("XXX is connected!");
-                            txtConnectStatus.setTextColor(ContextCompat.getColor(activity, R.color.darker_green));
-                            txtConnectContainer.setBackgroundColor(ContextCompat.getColor(activity, R.color.darker_green));
-                            txtConnectStatusIcon.setImageDrawable(ContextCompat.getDrawable(activity, R.drawable.ic_check_circle));
+                            updateDeviceStatus(0);
                             break;
                         case BroadcastConstants.ACTION_GATT_DISCONNECTED:
                             txtConnectStatus.setText("Device is lost connection!");
-                            txtConnectStatus.setTextColor(ContextCompat.getColor(activity, R.color.amber_500));
-                            txtConnectContainer.setBackgroundColor(ContextCompat.getColor(activity, R.color.amber_500));
-                            txtConnectStatusIcon.setImageDrawable(ContextCompat.getDrawable(activity, R.drawable.ic_warning));
+                            updateDeviceStatus(1);
                             break;
                         case BroadcastConstants.ACTION_GATT_SERVICES_DISCOVERED:
                             requestDeviceInfo();
@@ -125,9 +122,27 @@ public class MainFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         activity = getActivity();
+        setHasOptionsMenu(true);
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_main, container, false);
     }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.main, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_device_discovery:
+                startActivity(new Intent(activity, DeviceScanActivity.class));
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
 
     @Override
     public void onStart() {
@@ -137,7 +152,7 @@ public class MainFragment extends Fragment {
 
         View view = getView();
 
-        if(view == null) {
+        if (view == null) {
             Toast.makeText(activity, "getView failed!", Toast.LENGTH_LONG).show();
             activity.finish();
             return;
@@ -152,16 +167,12 @@ public class MainFragment extends Fragment {
         txtConnectContainer = view.findViewById(R.id.status_container);
         txtConnectStatusIcon = (ImageView) view.findViewById(R.id.status_icon);
 
-        if(MyApp.getPreferences().getString("DEVICE_ADDR", "").equals("")) {
+        if (MyApp.getPreferences().getString("DEVICE_ADDR", "").equals("")) {
             txtConnectStatus.setText("No device");
-            txtConnectStatus.setTextColor(ContextCompat.getColor(activity, R.color.warning));
-            txtConnectContainer.setBackgroundColor(ContextCompat.getColor(activity, R.color.warning));
-            txtConnectStatusIcon.setImageDrawable(ContextCompat.getDrawable(activity, R.drawable.ic_error));
+            updateDeviceStatus(2);
         } else {
             txtConnectStatus.setText("Device is lost connection!");
-            txtConnectStatus.setTextColor(ContextCompat.getColor(activity, R.color.amber_500));
-            txtConnectContainer.setBackgroundColor(ContextCompat.getColor(activity, R.color.amber_500));
-            txtConnectStatusIcon.setImageDrawable(ContextCompat.getDrawable(activity, R.drawable.ic_warning));
+            updateDeviceStatus(1);
         }
     }
 
@@ -215,5 +226,37 @@ public class MainFragment extends Fragment {
                 }
             }
         }).start();
+    }
+
+    /**
+     * Update GUI by code
+     * <p>
+     * 0 - Worked
+     * 1: Lost connect
+     * 2: Not connect
+     *
+     * @param code int
+     */
+    private void updateDeviceStatus(int code) {
+        switch (code) {
+            case 0: {
+                txtConnectStatus.setTextColor(ContextCompat.getColor(activity, R.color.darker_green));
+                txtConnectContainer.setBackgroundColor(ContextCompat.getColor(activity, R.color.darker_green));
+                txtConnectStatusIcon.setImageDrawable(ContextCompat.getDrawable(activity, R.drawable.ic_check_circle_84dp_white));
+                break;
+            }
+            case 1: {
+                txtConnectStatus.setTextColor(ContextCompat.getColor(activity, R.color.amber_500));
+                txtConnectContainer.setBackgroundColor(ContextCompat.getColor(activity, R.color.amber_500));
+                txtConnectStatusIcon.setImageDrawable(ContextCompat.getDrawable(activity, R.drawable.ic_warning_84dp_white));
+                break;
+            }
+            case 2: {
+                txtConnectStatus.setTextColor(ContextCompat.getColor(activity, R.color.warning));
+                txtConnectContainer.setBackgroundColor(ContextCompat.getColor(activity, R.color.warning));
+                txtConnectStatusIcon.setImageDrawable(ContextCompat.getDrawable(activity, R.drawable.ic_error_84dp_white));
+                break;
+            }
+        }
     }
 }

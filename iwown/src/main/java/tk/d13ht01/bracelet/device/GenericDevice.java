@@ -16,14 +16,14 @@ import java.util.HashMap;
 import java.util.UUID;
 
 import tk.d13ht01.bracelet.MyApp;
-import tk.d13ht01.bracelet.common.BroadcastConstants;
 import tk.d13ht01.bracelet.bluetooth.Communication;
+import tk.d13ht01.bracelet.common.BroadcastConstants;
 import tk.d13ht01.bracelet.common.Constants;
 import tk.d13ht01.bracelet.model.DeviceClockAlarm;
 import tk.d13ht01.bracelet.model.DeviceInfo;
 import tk.d13ht01.bracelet.model.Sport;
-import tk.d13ht01.bracelet.service.NotificationMonitorService;
 import tk.d13ht01.bracelet.service.BLEService;
+import tk.d13ht01.bracelet.service.NotificationMonitorService;
 import tk.d13ht01.bracelet.utils.CommunicationUtils;
 import tk.d13ht01.bracelet.utils.PebbleBitmapUtil;
 

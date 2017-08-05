@@ -1,4 +1,4 @@
-package tk.d13ht01.bracelet;
+package tk.d13ht01.bracelet.service;
 
 import android.app.Activity;
 import android.content.Context;
@@ -23,6 +23,7 @@ import com.google.android.gms.fitness.data.Field;
 
 import java.util.concurrent.TimeUnit;
 
+import tk.d13ht01.bracelet.MyApp;
 import tk.d13ht01.bracelet.common.BroadcastConstants;
 import tk.d13ht01.bracelet.model.Sport;
 

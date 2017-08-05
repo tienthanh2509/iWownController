@@ -1,4 +1,4 @@
-package tk.d13ht01.bracelet.ui;
+package tk.d13ht01.bracelet;
 
 import android.app.Activity;
 import android.app.ListActivity;
@@ -23,8 +23,6 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import tk.d13ht01.bracelet.MyApp;
-import tk.d13ht01.bracelet.R;
 import tk.d13ht01.bracelet.service.BLEService;
 
 public class DeviceScanActivity extends ListActivity {
@@ -54,7 +52,7 @@ public class DeviceScanActivity extends ListActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getActionBar().setTitle(R.string.title_devices);
+//        getActionBar().setTitle(R.string.title_devices);
         mHandler = new Handler();
 
         // Use this check to determine whether BLE is supported on the device.  Then you can

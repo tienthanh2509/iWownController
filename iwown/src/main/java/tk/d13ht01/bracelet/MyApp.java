@@ -14,9 +14,8 @@ import android.widget.Toast;
 
 import com.squareup.leakcanary.LeakCanary;
 
-import tk.d13ht01.bracelet.R;
 import tk.d13ht01.bracelet.service.BLEService;
-import tk.d13ht01.bracelet.ui.WelcomeActivity;
+import tk.d13ht01.bracelet.service.GoogleFitConnector;
 import tk.d13ht01.bracelet.utils.CommunicationUtils;
 
 /**
@@ -30,6 +29,7 @@ public class MyApp extends Application {
     public static MyApp getInstance() {
         return mInstance;
     }
+
     public static SharedPreferences getPreferences() {
         return MyApp.mPref;
     }

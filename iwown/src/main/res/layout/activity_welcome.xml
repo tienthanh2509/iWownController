@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="tk.d13ht01.bracelet.ui.WelcomeActivity">
+    tools:context="tk.d13ht01.bracelet.WelcomeActivity">
 
     <FrameLayout
         android:layout_width="match_parent"

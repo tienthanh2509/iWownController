@@ -27,7 +27,40 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
-        android:theme="@style/Theme.XposedInstaller.Light">
+        android:theme="@style/AppTheme.Light">
+        <activity android:name=".WelcomeActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="tk.d13ht01.bracelet.DeviceScanActivity"
+            android:label="@string/app_name"/>
+        <activity
+            android:name="tk.d13ht01.bracelet.DeviceSettingsActivity"
+            android:label="@string/title_activity_device_settings">
+        </activity>
+        <activity
+            android:name=".SupportActivity"
+            android:theme="@style/AppTheme.Transparent"/>
+        <activity
+            android:name=".AboutActivity"
+            android:theme="@style/AppTheme.Transparent"/>
+
+        <service
+            android:name="tk.d13ht01.bracelet.service.BLEService"
+            android:enabled="true"/>
+        <service
+            android:name="tk.d13ht01.bracelet.service.NotificationMonitorService"
+            android:label="@string/app_name"
+            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
+            <intent-filter>
+                <action android:name="android.service.notification.NotificationListenerService"/>
+            </intent-filter>
+        </service>
+
         <receiver android:name="tk.d13ht01.bracelet.receiver.MyReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
@@ -55,38 +88,9 @@
             </intent-filter>
         </receiver>
 
-        <activity
-            android:name="tk.d13ht01.bracelet.ui.DeviceScanActivity"
-            android:label="@string/app_name"/>
-
-        <service
-            android:name="tk.d13ht01.bracelet.service.BLEService"
-            android:enabled="true"/>
-        <service
-            android:name="tk.d13ht01.bracelet.service.NotificationMonitorService"
-            android:label="@string/app_name"
-            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
-            <intent-filter>
-                <action android:name="android.service.notification.NotificationListenerService"/>
-            </intent-filter>
-        </service>
-
-        <activity
-            android:name="tk.d13ht01.bracelet.ui.DeviceSettingsActivity"
-            android:label="@string/title_activity_device_settings">
-        </activity>
-
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version"/>
-
-        <activity android:name="tk.d13ht01.bracelet.ui.WelcomeActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
-        </activity>
     </application>
 
 </manifest>

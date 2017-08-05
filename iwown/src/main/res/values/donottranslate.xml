@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="support_faq_url" translatable="false">https://product.d13h01.tk/bracelet</string>
+    <string name="support_donate_url" translatable="false">https://d13h01.tk/donate</string>
+    <string name="about_source" translatable="false">https://github.com/tienthanh2509</string>
+    <string name="about_support" translatable="false">@string/support_faq_url</string>
+    <string name="android_sdk" translatable="false">Android %1$s (%2$s, API %3$d)</string>
+
+</resources>

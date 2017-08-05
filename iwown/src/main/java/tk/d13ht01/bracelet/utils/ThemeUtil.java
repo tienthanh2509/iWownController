@@ -4,15 +4,15 @@ import android.content.Context;
 import android.content.res.Resources.Theme;
 import android.content.res.TypedArray;
 
+import tk.d13ht01.bracelet.BaseActivity;
 import tk.d13ht01.bracelet.MyApp;
 import tk.d13ht01.bracelet.R;
-import tk.d13ht01.bracelet.ui.BaseActivity;
 
 public final class ThemeUtil {
     private static int[] THEMES = new int[]{
-            R.style.Theme_XposedInstaller_Light,
-            R.style.Theme_XposedInstaller_Dark,
-            R.style.Theme_XposedInstaller_Dark_Black,};
+            R.style.AppTheme_Light,
+            R.style.AppTheme_Dark,
+            R.style.AppTheme_Dark_Black,};
 
     private ThemeUtil() {
     }
