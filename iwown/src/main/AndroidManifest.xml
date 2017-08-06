@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ Copyright (c) 2017 PT Studio all rights reserved.
-  ~ Licensed under MIT
+  ~ Licensed under Apache License 2.0 (https://github.com/tienthanh2509/iWownController/blob/master/LICENSE)
   -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
@@ -42,7 +42,8 @@
         </activity>
         <activity
             android:name="tk.d13ht01.bracelet.DeviceScanActivity"
-            android:label="@string/app_name"/>
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.Transparent"/>
         <activity
             android:name="tk.d13ht01.bracelet.DeviceSettingsActivity"
             android:label="@string/title_activity_device_settings">

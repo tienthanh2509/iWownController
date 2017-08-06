@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2017 PT Studio all rights reserved.
- * Licensed under MIT
+ * Licensed under Apache License 2.0 (https://github.com/tienthanh2509/iWownController/blob/master/LICENSE)
  */
 
 package tk.d13ht01.bracelet;
@@ -42,7 +42,7 @@ public class MainFragment extends Fragment {
 
     /**
      * Handles various events fired by the Service.
-     *
+     * <p>
      * ACTION_GATT_CONNECTED: connected to a GATT server.
      * ACTION_GATT_DISCONNECTED: disconnected from a GATT server.
      * ACTION_GATT_SERVICES_DISCOVERED: discovered GATT services.
@@ -69,7 +69,7 @@ public class MainFragment extends Fragment {
                         case BroadcastConstants.ACTION_DEVICE_INFO:
                             final DeviceInfo info = (DeviceInfo) in.getSerializableExtra("data");
                             txtBraceletModel.setText(info.getModel());
-                            txtBraceletFirmware.setText(info.getSwversion());
+                            txtBraceletFirmware.setText(info.getFirmwareVersion());
                             break;
                         case BroadcastConstants.ACTION_DEVICE_POWER:
                             txtBraceletBattery.setText(in.getIntExtra("data", 0) + "%");
@@ -139,6 +139,11 @@ public class MainFragment extends Fragment {
         txtConnectContainer = view.findViewById(R.id.status_container);
         txtConnectStatusIcon = (ImageView) view.findViewById(R.id.status_icon);
 
+        txtBraceletModel.setText("N/a");
+        txtBraceletFirmware.setText("N/a");
+        txtBraceletBattery.setText("N/a");
+        txtBraceletTime.setText("N/a");
+
         return view;
     }
 
@@ -202,6 +207,12 @@ public class MainFragment extends Fragment {
      * Send request basic data to bracelet
      */
     private void requestDeviceInfo() {
+        // Retrieving old data
+        txtBraceletModel.setText(MyApp.getPreferences().getString("device_model", "N/a"));
+        txtBraceletFirmware.setText(MyApp.getPreferences().getString("device_firmware_version", "Updating..."));
+        txtBraceletBattery.setText(MyApp.getPreferences().getInt("device_battery_level", 0) + "%");
+        txtBraceletTime.setText(MyApp.getPreferences().getString("device_firmware_version", "Updating..."));
+
         new Thread(new Runnable() {
             @Override
             public void run() {

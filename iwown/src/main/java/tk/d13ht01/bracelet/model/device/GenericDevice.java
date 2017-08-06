@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2017 PT Studio all rights reserved.
- * Licensed under MIT
+ * Licensed under Apache License 2.0 (https://github.com/tienthanh2509/iWownController/blob/master/LICENSE)
  */
 
 package tk.d13ht01.bracelet.model.device;
@@ -378,13 +378,13 @@ public class GenericDevice implements Device {
                     // Data ready for parse
                     if (this.receiveBuffer.length >= 3) {
                         Intent intent;
+                        SharedPreferences.Editor ed = MyApp.getPreferences().edit();
                         switch (this.receiveBuffer[2]) {
                             case Constants.APIv1_DATA_DEVICE_INFO:
                                 DeviceInfo info = DeviceInfo.fromData(this.receiveBuffer);
 
-                                SharedPreferences.Editor ed = MyApp.getPreferences().edit();
                                 ed.putString("device_model", info.getModel());
-                                ed.putString("device_sw", info.getSwversion());
+                                ed.putString("device_firmware_version", info.getFirmwareVersion());
                                 ed.apply();
 
                                 Log.d(TAG, "DEVICE_INFO: " + info.toString());
@@ -394,7 +394,11 @@ public class GenericDevice implements Device {
                                 break;
                             case Constants.APIv1_DATA_DEVICE_POWER:
                                 int power = CommunicationUtils.bytesToInt(Arrays.copyOfRange(this.receiveBuffer, 4, 5));
+                                ed.putInt("device_battery_level", power);
+                                ed.apply();
+
                                 Log.d(TAG, "DEVICE_POWER: " + power + "%");
+
                                 intent = new Intent(BroadcastConstants.ACTION_DEVICE_POWER);
                                 intent.putExtra("data", power);
                                 MyApp.getmContext().sendBroadcast(intent);
