@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2017 PT Studio all rights reserved.
+  ~ Licensed under MIT
+  -->
+
 <resources>
 
     <string name="support_faq_url" translatable="false">https://product.d13h01.tk/bracelet</string>

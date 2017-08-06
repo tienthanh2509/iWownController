@@ -1,3 +1,8 @@
+<!--
+  ~ Copyright (c) 2017 PT Studio all rights reserved.
+  ~ Licensed under MIT
+  -->
+
 <resources>
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="toolbar_elevation">4dp</dimen>
