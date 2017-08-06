@@ -43,6 +43,9 @@
             android:label="@string/title_activity_device_settings">
         </activity>
         <activity
+            android:name=".SettingsActivity"
+            android:theme="@style/AppTheme.Transparent"/>
+        <activity
             android:name=".SupportActivity"
             android:theme="@style/AppTheme.Transparent"/>
         <activity

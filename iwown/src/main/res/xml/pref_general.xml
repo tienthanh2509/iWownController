@@ -1,119 +1,41 @@
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+                  xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <PreferenceCategory
-        android:key="pref_key_body_settings"
-        android:title="@string/pref_group_body">
+        android:key="group_app"
+        android:title="@string/settings_group_app">
 
-        <EditTextPreference
-            android:capitalize="words"
-            android:defaultValue="1000"
-            android:inputType="textCapWords"
-            android:key="dev_conf_goal"
-            android:maxLines="1"
-            android:numeric="integer"
-            android:selectAllOnFocus="true"
-            android:singleLine="true"
-            android:title="@string/pref_device_body_goal"/>
-
-        <EditTextPreference
-            android:capitalize="words"
-            android:defaultValue="70"
-            android:inputType="textCapWords"
-            android:key="dev_conf_weight"
-            android:maxLines="1"
-            android:numeric="integer"
-            android:selectAllOnFocus="true"
-            android:singleLine="true"
-            android:title="@string/pref_device_body_weight"/>
-
-        <EditTextPreference
-            android:capitalize="words"
-            android:defaultValue="180"
-            android:inputType="textCapWords"
-            android:key="dev_conf_height"
-            android:maxLines="1"
-            android:numeric="integer"
-            android:selectAllOnFocus="true"
-            android:singleLine="true"
-            android:title="@string/pref_device_body_height"/>
-
-        <EditTextPreference
-            android:capitalize="words"
-            android:defaultValue="26"
-            android:inputType="textCapWords"
-            android:key="dev_conf_age"
-            android:maxLines="1"
-            android:numeric="integer"
-            android:selectAllOnFocus="true"
-            android:singleLine="true"
-            android:title="@string/pref_device_body_age"/>
-
-        <ListPreference
+        <tk.d13ht01.bracelet.widget.IntegerListPreference
             android:defaultValue="0"
-            android:entries="@array/pref_device_body_gender_titles"
-            android:entryValues="@array/pref_device_body_gender_values"
-            android:key="dev_conf_gender"
-            android:negativeButtonText="@null"
-            android:positiveButtonText="@null"
-            android:title="@string/pref_device_body_gender"/>
+            android:entries="@array/theme_texts"
+            android:entryValues="@array/theme_values"
+            android:key="theme"
+            android:summary="%s"
+            android:title="@string/settings_theme"
+            app:useStockLayout="true"/>
+
+        <tk.d13ht01.bracelet.widget.IntegerListPreference
+            android:defaultValue="0"
+            android:entries="@array/default_view_texts"
+            android:entryValues="@array/default_view_values"
+            android:key="default_view"
+            android:summary="%s"
+            android:title="@string/settings_default_view"
+            app:useStockLayout="true"/>
+
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:key="pref_key_body_settings"
-        android:title="@string/pref_group_device">
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:key="dev_conf_gesture"
-            android:summary="@string/pref_device_gesture_desc"
-            android:title="@string/pref_device_gesture"/>
+        android:key="group_experimental"
+        android:title="@string/settings_group_experimental">
 
         <CheckBoxPreference
             android:defaultValue="false"
-            android:key="dev_conf_light"
-            android:title="@string/pref_device_light"/>
-
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="dev_conf_autosleep"
-            android:title="@string/pref_device_auto_sleep"/>
-
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:key="dev_conf_use24hours"
-            android:title="@string/pref_device_use24hours"/>
-
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="dev_conf_englishunits"
-            android:title="@string/pref_device_english_units"/>
-
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="dev_conf_ble"
-            android:summary="@string/pref_device_ble_desc"
-            android:title="@string/pref_device_ble"/>
-    </PreferenceCategory>
-
-    <PreferenceCategory
-        android:key="pref_key_body_settings"
-        android:title="@string/pref_group_notif">
-
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="notif_foreign"
-            android:summary="@string/pref_notif_foreign_desc"
-            android:title="@string/pref_notif_foreign"/>
-
-        <EditTextPreference
-            android:capitalize="words"
-            android:defaultValue="0"
-            android:inputType="textCapWords"
-            android:key="notif_delay"
-            android:maxLines="1"
-            android:numeric="integer"
-            android:selectAllOnFocus="true"
-            android:singleLine="true"
-            android:summary="@string/pref_notif_delay_desc"
-            android:title="@string/pref_notif_delay"/>
+            android:key="disable_resources"
+            android:persistent="false"
+            android:summary="@string/settings_enable_development_mode_summary"
+            android:title="@string/settings_enable_development_mode"/>
 
     </PreferenceCategory>
 </PreferenceScreen>

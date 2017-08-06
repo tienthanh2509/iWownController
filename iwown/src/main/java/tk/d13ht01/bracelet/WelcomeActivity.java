@@ -140,6 +140,10 @@ public class WelcomeActivity extends BaseActivity implements NavigationView.OnNa
                 setTitle(R.string.app_name);
                 navFragment = new PushNotificationSettingFragment();
                 break;
+            case R.id.nav_item_settings:
+                startActivity(new Intent(this, SettingsActivity.class));
+                mNavigationView.getMenu().findItem(mPrevSelectedId).setChecked(true);
+                return;
             case R.id.nav_item_support:
                 startActivity(new Intent(this, SupportActivity.class));
                 mNavigationView.getMenu().findItem(mPrevSelectedId).setChecked(true);

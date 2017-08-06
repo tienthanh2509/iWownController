@@ -102,28 +102,16 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <!-- Settings tab -->
-    <string name="settings_group_download">Download</string>
-    <string name="settings_enable_downloads">Enable downloads</string>
-    <string name="settings_enable_downloads_summary">Allow Xposed Installer to check for updates and new modules</string>
-    <string name="settings_release_type">Versions to be shown</string>
-    <string name="settings_group_experimental">Experimental</string>
-    <string name="settings_disable_resources">Disabled resource hooks</string>
-    <string name="settings_disable_resources_summary">Workaround for conflicts with theming engines\n<b>WARNING:</b> Modules which try to change resources will not work when this is enabled.</string>
     <string name="settings_group_app">Application</string>
+    <string name="settings_default_view">Default view</string>
     <string name="settings_theme">Theme</string>
     <string name="settings_theme_light">Light</string>
     <string name="settings_theme_dark">Dark</string>
     <string name="settings_theme_black">Black (useful for AMOLED screens)</string>
-    <string name="settings_default_view">Default view</string>
-    <string name="open_drawer_summ">Open automatically the navigation drawer at startup</string>
-    <string name="open_drawer">Open automatically navigation drawer</string>
-    <string name="skip_xposedminversion_check">Skip \'xposedminversion\' check</string>
-    <string name="skip_xposedminversion_check_summ">Skip \'xposedminversion\' check for modules</string>
-    <string name="chrome_custom_tabs">Chrome Custom Tabs</string>
-    <string name="chrome_custom_tabs_summ">Open links in internal browser</string>
-    <string name="download_location">Download location</string>
-    <string name="download_location_summ">Download location for APK files (modules only)</string>
-    <string name="notify_module_update">Enable module update notification</string>
+
+    <string name="settings_group_experimental">Experimental</string>
+    <string name="settings_enable_development_mode">Enable developer mode</string>
+    <string name="settings_enable_development_mode_summary">BLE toolkit &amp; other tools.</string>
 
     <!-- Support tab -->
     <string name="module_support">Support</string>

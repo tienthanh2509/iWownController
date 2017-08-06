@@ -7,14 +7,18 @@
             android:id="@+id/nav_item_home"
             android:icon="@drawable/ic_home_24dp_gray"
             android:title="@string/nav_item_main"/>
+        <item
+            android:id="@+id/nav_item_push_notification_settings"
+            android:icon="@drawable/ic_message_bulleted_24dp_gray"
+            android:title="@string/nav_item_push_mesg"/>
     </group>
     <group
         android:id="@+id/option_items"
         android:checkableBehavior="all">
         <item
-            android:id="@+id/nav_item_push_notification_settings"
-            android:icon="@drawable/ic_message_bulleted_24dp_gray"
-            android:title="@string/nav_item_push_mesg"/>
+            android:id="@+id/nav_item_settings"
+            android:icon="@drawable/ic_settings_24dp_gray"
+            android:title="@string/nav_item_settings"/>
         <item
             android:id="@+id/nav_item_support"
             android:icon="@drawable/ic_support_24dp_gray"
