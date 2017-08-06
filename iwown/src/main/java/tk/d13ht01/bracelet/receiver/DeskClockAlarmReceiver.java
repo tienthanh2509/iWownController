@@ -18,7 +18,7 @@ public class DeskClockAlarmReceiver extends BroadcastReceiver {
     public static boolean isAlarm = false;
 
     public void onReceive(Context context, Intent intent) {
-        if (!MyApp.mPref.getBoolean("cbx_notice_deskclock", false))
+        if (!MyApp.getPreferences().getBoolean("cbx_notice_deskclock", false))
             return;
 
         if (BleServiceImpl.getInstance() == null || BleServiceImpl.getInstance().getDevice() == null)

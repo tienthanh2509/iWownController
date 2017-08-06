@@ -37,6 +37,7 @@ public class MainFragment extends Fragment {
 
     /**
      * Handles various events fired by the Service.
+     *
      * ACTION_GATT_CONNECTED: connected to a GATT server.
      * ACTION_GATT_DISCONNECTED: disconnected from a GATT server.
      * ACTION_GATT_SERVICES_DISCOVERED: discovered GATT services.
@@ -79,7 +80,7 @@ public class MainFragment extends Fragment {
                             BleServiceImpl.getInstance().getDevice().setDate();
                             break;
                         case BroadcastConstants.ACTION_CONNECT_TO_GFIT:
-//                            if (MyApp.mPref.getBoolean("fit_connected", false) == false) {
+//                            if (MyApp.getPreferences().getBoolean("fit_connected", false) == false) {
 //                                Toast.makeText(getActivity(), getResources().getString(R.string.google_fit_not_connected),
 //                                        Toast.LENGTH_SHORT).show();
 ////                                ((Button) container.findViewById(R.id.connectToFitBtn))
@@ -120,10 +121,20 @@ public class MainFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_main, container, false);
         activity = getActivity();
         setHasOptionsMenu(true);
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_main, container, false);
+
+        txtBraceletModel = (TextView) view.findViewById(R.id.bracelet_model);
+        txtBraceletFirmware = (TextView) view.findViewById(R.id.bracelet_firmware);
+        txtBraceletBattery = (TextView) view.findViewById(R.id.bracelet_battery_level);
+        txtBraceletTime = (TextView) view.findViewById(R.id.bracelet_time);
+
+        txtConnectStatus = (TextView) view.findViewById(R.id.connect_status);
+        txtConnectContainer = view.findViewById(R.id.status_container);
+        txtConnectStatusIcon = (ImageView) view.findViewById(R.id.status_icon);
+
+        return view;
     }
 
     @Override
@@ -157,20 +168,7 @@ public class MainFragment extends Fragment {
             return;
         }
 
-        txtBraceletModel = (TextView) view.findViewById(R.id.bracelet_model);
-        txtBraceletFirmware = (TextView) view.findViewById(R.id.bracelet_firmware);
-        txtBraceletBattery = (TextView) view.findViewById(R.id.bracelet_battery_level);
-        txtBraceletTime = (TextView) view.findViewById(R.id.bracelet_time);
-
-        txtConnectStatus = (TextView) view.findViewById(R.id.connect_status);
-        txtConnectContainer = view.findViewById(R.id.status_container);
-        txtConnectStatusIcon = (ImageView) view.findViewById(R.id.status_icon);
-
-        if (MyApp.getPreferences().getString("device_mac_address", "").equals("")) {
-            updateDeviceStatus(2);
-        } else {
-            updateDeviceStatus(1);
-        }
+        checkDeviceConntected();
     }
 
     @Override
@@ -178,17 +176,7 @@ public class MainFragment extends Fragment {
         super.onResume();
 
         activity.registerReceiver(mGattUpdateReceiver, gattIntentFilter());
-
-        if (BleServiceImpl.getInstance() != null &&
-                BleServiceImpl.getInstance().getmBluetoothGatt() != null &&
-                BleServiceImpl.getInstance().getmBluetoothGatt().getDevice() != null) {
-            updateDeviceStatus(0);
-            requestDeviceInfo();
-        } else {
-            updateDeviceStatus(1);
-            if (BleServiceImpl.getInstance() != null)
-                BleServiceImpl.getInstance().connect(MyApp.mPref.getString("device_mac_address", ""), true);
-        }
+        checkDeviceConntected();
     }
 
     @Override
@@ -236,9 +224,6 @@ public class MainFragment extends Fragment {
      */
     private void updateDeviceStatus(int code) {
         switch (code) {
-            case 3:
-                txtConnectStatus.setText("Updating...");
-                break;
             case 0: {
                 txtConnectStatus.setText(String.format("%s is connected!", BleServiceImpl.getInstance().getmBluetoothGatt().getDevice().getName()));
                 txtConnectStatus.setTextColor(ContextCompat.getColor(activity, R.color.darker_green));
@@ -259,6 +244,26 @@ public class MainFragment extends Fragment {
                 txtConnectContainer.setBackgroundColor(ContextCompat.getColor(activity, R.color.warning));
                 txtConnectStatusIcon.setImageDrawable(ContextCompat.getDrawable(activity, R.drawable.ic_error_84dp_white));
                 break;
+            }
+        }
+    }
+
+    /**
+     * Update device connected indicator
+     */
+    private void checkDeviceConntected() {
+        if (MyApp.getPreferences().getString("device_mac_address", "").equals("")) {
+            updateDeviceStatus(2);
+        } else {
+            if (BleServiceImpl.getInstance() != null &&
+                    BleServiceImpl.getInstance().getmBluetoothGatt() != null &&
+                    BleServiceImpl.getInstance().getmBluetoothGatt().getDevice() != null) {
+                updateDeviceStatus(0);
+                requestDeviceInfo();
+            } else {
+                updateDeviceStatus(1);
+                if (BleServiceImpl.getInstance() != null)
+                    BleServiceImpl.getInstance().connect(MyApp.getPreferences().getString("device_mac_address", ""), true);
             }
         }
     }

@@ -113,18 +113,18 @@ public class WelcomeActivity extends BaseActivity implements NavigationView.OnNa
         }
     }
 
-    public void switchFragment(int itemId) {
-        mSelectedId = mNavigationView.getMenu().getItem(itemId).getItemId();
-        mNavigationView.getMenu().findItem(mSelectedId).setChecked(true);
-        mDrawerHandler.removeCallbacksAndMessages(null);
-        mDrawerHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                navigate(mSelectedId);
-            }
-        }, 250);
-        mDrawerLayout.closeDrawers();
-    }
+//    public void switchFragment(int itemId) {
+//        mSelectedId = mNavigationView.getMenu().getItem(itemId).getItemId();
+//        mNavigationView.getMenu().findItem(mSelectedId).setChecked(true);
+//        mDrawerHandler.removeCallbacksAndMessages(null);
+//        mDrawerHandler.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                navigate(mSelectedId);
+//            }
+//        }, 250);
+//        mDrawerLayout.closeDrawers();
+//    }
 
     private void navigate(final int itemId) {
         final View elevation = findViewById(R.id.elevation);

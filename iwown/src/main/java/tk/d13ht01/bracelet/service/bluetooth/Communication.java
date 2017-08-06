@@ -42,14 +42,14 @@ public class Communication extends BluetoothGattCallback {
         if (newState == BluetoothProfile.STATE_CONNECTED) {
             bleService.setmConnectionState(BleServiceConstants.STATE_CONNECTED);
             intent = new Intent(BroadcastConstants.ACTION_GATT_CONNECTED);
-            MyApp.mContext.sendBroadcast(intent);
+            MyApp.getmContext().sendBroadcast(intent);
 
             Log.i(TAG, "Connected to GATT server.");
             Log.i(TAG, "Attempting to start service discovery.");
             bleService.getmBluetoothGatt().discoverServices();
         } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
             intent = new Intent(BroadcastConstants.ACTION_GATT_DISCONNECTED);
-            MyApp.mContext.sendBroadcast(intent);
+            MyApp.getmContext().sendBroadcast(intent);
 
             Log.i(TAG, "Disconnected from GATT server.");
             BleServiceImpl.getInstance().setmConnectionState(BleServiceConstants.STATE_DISCONNECTED);
@@ -94,7 +94,7 @@ public class Communication extends BluetoothGattCallback {
                 Log.e(TAG, "Can't set descriptor!");
 
             Intent intent = new Intent(BroadcastConstants.ACTION_GATT_SERVICES_DISCOVERED);
-            MyApp.mContext.sendBroadcast(intent);
+            MyApp.getmContext().sendBroadcast(intent);
         } else {
             Log.w(TAG, "onServicesDiscovered received: " + status);
         }

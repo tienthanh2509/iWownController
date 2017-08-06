@@ -149,7 +149,7 @@ public class DeviceScanActivity extends ListActivity {
             mScanning = false;
         }
 
-        SharedPreferences.Editor ed = MyApp.mPref.edit();
+        SharedPreferences.Editor ed = MyApp.getPreferences().edit();
         ed.putString("device_mac_address", device.getAddress());
         ed.putString("device_name", device.getName());
         ed.apply();

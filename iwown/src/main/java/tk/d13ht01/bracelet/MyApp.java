@@ -1,5 +1,6 @@
 package tk.d13ht01.bracelet;
 
+import android.annotation.SuppressLint;
 import android.app.Application;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -14,30 +15,29 @@ import android.widget.Toast;
 
 import com.squareup.leakcanary.LeakCanary;
 
-import tk.d13ht01.bracelet.service.impl.BleServiceImpl;
 import tk.d13ht01.bracelet.service.GoogleFitConnector;
+import tk.d13ht01.bracelet.service.impl.BleServiceImpl;
 import tk.d13ht01.bracelet.utils.CommunicationUtils;
 
 /**
  * Created by Aloyan Dmitry on 29.08.2015
  */
 public class MyApp extends Application {
-    public static Context mContext;
-    public static MyApp mInstance;
-    public static SharedPreferences mPref;
+    @SuppressLint("StaticFieldLeak")
+    private static Context mContext;
+    private static SharedPreferences mPref;
 
-    public static MyApp getInstance() {
-        return mInstance;
+    public static Context getmContext() {
+        return mContext;
     }
 
     public static SharedPreferences getPreferences() {
-        return MyApp.mPref;
+        return mPref;
     }
 
     private static void loadProperties() {
-        SharedPreferences sp = MyApp.mPref;
-        if (sp.getBoolean("fit_connected", false))
-            GoogleFitConnector.connect(MyApp.mContext);
+        if (getPreferences().getBoolean("fit_connected", false))
+            GoogleFitConnector.connect(mContext);
     }
 
     /**
@@ -57,9 +57,8 @@ public class MyApp extends Application {
         super.onCreate();
         loadLeakCanary();
 
-        mInstance = this;
-        MyApp.mContext = getApplicationContext();
-        MyApp.mPref = PreferenceManager.getDefaultSharedPreferences(MyApp.mContext);
+        mContext = getApplicationContext();
+        mPref = PreferenceManager.getDefaultSharedPreferences(getmContext());
 
         if (CommunicationUtils.isBluetoothAvailable()) {
             // Create service
@@ -72,9 +71,9 @@ public class MyApp extends Application {
             Notification notification = new NotificationCompat.Builder(this)
                     .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher))
                     .setSmallIcon(R.drawable.ic_android_head_24dp_black)
-                    .setContentText("IwownFit Controller")
-                    .setContentTitle("IwownFit Controller")
-                    .setTicker("IwownFit Controller")
+                    .setContentText("Iwown bracelet controller")
+                    .setContentTitle("Bracelet Controller")
+                    .setTicker("Bracelet Controller")
                     .setPriority(Notification.PRIORITY_LOW)
                     .setAutoCancel(false)
                     .setContentIntent(pi)
@@ -84,7 +83,7 @@ public class MyApp extends Application {
             ((NotificationManager) getSystemService(NOTIFICATION_SERVICE)).notify(0, notification);
             loadProperties();
         } else {
-            Toast.makeText(MyApp.mContext, R.string.ble_not_supported, Toast.LENGTH_SHORT).show();
+            Toast.makeText(MyApp.getmContext(), R.string.ble_not_supported, Toast.LENGTH_SHORT).show();
             android.os.Process.killProcess(android.os.Process.myPid());
         }
     }

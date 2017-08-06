@@ -107,9 +107,9 @@ public class BleServiceImpl extends Service implements BleService {
         super.onCreate();
         instance = this;
 
-        if (MyApp.mPref.getString("device_model", "").equals(WristbandModel.MODEL_I7S2))
+        if (MyApp.getPreferences().getString("device_model", "").equals(WristbandModel.MODEL_I7S2))
             this.device = new I7s2Device(this);
-        else if (MyApp.mPref.getString("device_model", "").equals(WristbandModel.MODEL_I5PLUS))
+        else if (MyApp.getPreferences().getString("device_model", "").equals(WristbandModel.MODEL_I5PLUS))
             this.device = new I5Device(this);
         else
             this.device = new GenericDevice(this);
@@ -118,7 +118,7 @@ public class BleServiceImpl extends Service implements BleService {
             Log.e(TAG, "Unable to initialize Bluetooth");
             return;
         }
-        this.connect(MyApp.mPref.getString("device_mac_address", ""), true);
+        this.connect(MyApp.getPreferences().getString("device_mac_address", ""), true);
     }
 
     @Override
@@ -164,14 +164,14 @@ public class BleServiceImpl extends Service implements BleService {
     @Override
     public boolean connect(final String address, boolean forceConnect) {
         if (mBluetoothAdapter == null || address == null ||
-                (MyApp.mPref.getString("device_mac_address", "").length() <= 0) && address.length() <= 0) {
+                (MyApp.getPreferences().getString("device_mac_address", "").length() <= 0) && address.length() <= 0) {
             Log.w(TAG, "BluetoothAdapter not initialized or unspecified address.");
             return false;
         }
 
         // Previously connected device.  Try to reconnect.
-        if (!forceConnect && MyApp.mPref.getString("device_mac_address", "").length() > 0 &&
-                address.equals(MyApp.mPref.getString("device_mac_address", "")) && mBluetoothGatt != null) {
+        if (!forceConnect && MyApp.getPreferences().getString("device_mac_address", "").length() > 0 &&
+                address.equals(MyApp.getPreferences().getString("device_mac_address", "")) && mBluetoothGatt != null) {
             Log.d(TAG, "Trying to use an existing mBluetoothGatt for connection.");
             if (mBluetoothGatt.connect()) {
                 mConnectionState = BleServiceConstants.STATE_CONNECTING;
@@ -257,12 +257,12 @@ public class BleServiceImpl extends Service implements BleService {
                         return;
                     alreadyChecking = true;
                     Thread.sleep(60000);
-                    if (MyApp.mPref.getString("device_mac_address", "").length() > 0) {
+                    if (MyApp.getPreferences().getString("device_mac_address", "").length() > 0) {
                         if (isConnected()) {
                             // FIXME bad practice use comm object
                             if (Communication.lastDataReceived - (new Date().getTime()) >= 120000) {
                                 BleServiceImpl.getInstance().disconnect();
-                                BleServiceImpl.getInstance().connect(MyApp.mPref.getString("device_mac_address", ""), true);
+                                BleServiceImpl.getInstance().connect(MyApp.getPreferences().getString("device_mac_address", ""), true);
                                 checkConnection();
                                 return;
                             }

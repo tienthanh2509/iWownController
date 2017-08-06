@@ -139,12 +139,12 @@ public class CommunicationUtils {
     }
 
     public static boolean isBluetoothAvailable() {
-        if (!MyApp.mContext.getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE))
+        if (!MyApp.getmContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE))
             return false;
 
         // Initializes a Bluetooth adapter.  For API level 18 and above, get a reference to
         // BluetoothAdapter through BluetoothManager.
-        final BluetoothManager bluetoothManager = (BluetoothManager) MyApp.mContext.getSystemService(Context.BLUETOOTH_SERVICE);
+        final BluetoothManager bluetoothManager = (BluetoothManager) MyApp.getmContext().getSystemService(Context.BLUETOOTH_SERVICE);
         // Checks if Bluetooth is supported on the device.
         return bluetoothManager.getAdapter() != null;
     }

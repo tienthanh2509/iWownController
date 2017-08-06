@@ -26,7 +26,7 @@ public class PebbleBitmapUtil {
     public static final String PIXEL_OFF = "0";
     public static final String PIXEL_ON = "1";
     public static final int SETTINGS_DEFAULT_MBR_SIZE = 4096;
-    public static Typeface unifont = Typeface.createFromAsset(MyApp.mContext.getAssets(), "ClearSans-Light.ttf");
+    public static Typeface unifont = Typeface.createFromAsset(MyApp.getmContext().getAssets(), "ClearSans-Light.ttf");
     public final byte[] data;
     public final UnsignedInteger flags;
     public final short height;

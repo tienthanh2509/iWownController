@@ -61,7 +61,7 @@ public class CallReceiver extends BroadcastReceiver {
     }
 
     public void onReceive(Context context, Intent intent) {
-        if (!MyApp.mPref.getBoolean("cbx_notice_call", false))
+        if (!MyApp.getPreferences().getBoolean("cbx_notice_call", false))
             return;
 
         if (BleServiceImpl.getInstance() == null || BleServiceImpl.getInstance().getDevice() == null)

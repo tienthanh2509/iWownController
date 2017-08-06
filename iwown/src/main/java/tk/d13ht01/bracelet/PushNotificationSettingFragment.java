@@ -44,7 +44,7 @@ public class PushNotificationSettingFragment extends ListFragment {
 
         setHasOptionsMenu(true);
 
-        packageManager = MyApp.mContext.getPackageManager();
+        packageManager = MyApp.getmContext().getPackageManager();
         new LoadApplications().execute();
     }
 
