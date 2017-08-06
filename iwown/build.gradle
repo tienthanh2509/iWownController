@@ -14,6 +14,7 @@ android {
     defaultConfig {
         minSdkVersion 19
         targetSdkVersion 23
+        resConfigs "en", "vi"
         signingConfig signingConfigs.deploy_key
     }
     compileOptions {
@@ -25,7 +26,7 @@ android {
             signingConfig signingConfigs.deploy_key
         }
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.deploy_key
         }

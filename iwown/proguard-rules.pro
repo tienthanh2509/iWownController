@@ -15,35 +15,54 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+-dontwarn android.support.**
+-dontwarn java.lang.**
+-dontwarn javax.lang.**
 
--keep public class com.google.android.gms.common.internal.safeparcel.SafeParcelable {
-    public static final *** NULL;
+-dontnote android.net.http.*
+-dontnote org.apache.http.**
+-dontnote com.afollestad.materialdialogs.internal.**
+
+-dontpreverify
+-repackageclasses ''
+-allowaccessmodification
+-optimizations !code/simplification/arithmetic
+-keepattributes *Annotation*
+
+-keep public class * extends android.app.Activity
+-keep public class * extends android.app.Application
+-keep public class * extends android.app.Service
+-keep public class * extends android.content.BroadcastReceiver
+-keep public class * extends android.content.ContentProvider
+
+-keep public class * extends android.view.View {
+      public <init>(android.content.Context);
+      public <init>(android.content.Context, android.util.AttributeSet);
+      public <init>(android.content.Context, android.util.AttributeSet, int);
+      public void set*(...);
 }
 
--keepnames class * implements android.os.Parcelable
+-keepclasseswithmembers class * {
+    public <init>(android.content.Context, android.util.AttributeSet);
+}
+
+-keepclasseswithmembers class * {
+    public <init>(android.content.Context, android.util.AttributeSet, int);
+}
+
+-keepclassmembers class * extends android.content.Context {
+    public void *(android.view.View);
+    public void *(android.view.MenuItem);
+}
+
 -keepclassmembers class * implements android.os.Parcelable {
-  public static final *** CREATOR;
+    static ** CREATOR;
 }
 
--keep @interface android.support.annotation.Keep
--keep @android.support.annotation.Keep class *
--keepclasseswithmembers class * {
-  @android.support.annotation.Keep <fields>;
-}
--keepclasseswithmembers class * {
-  @android.support.annotation.Keep <methods>;
+-keepclassmembers class **.R$* {
+    public static <fields>;
 }
 
--keep @interface com.google.android.gms.common.annotation.KeepName
--keepnames @com.google.android.gms.common.annotation.KeepName class *
--keepclassmembernames class * {
-  @com.google.android.gms.common.annotation.KeepName *;
+-keepclassmembers class * {
+    @android.webkit.JavascriptInterface <methods>;
 }
-
--keep @interface com.google.android.gms.common.util.DynamiteApi
--keep public @com.google.android.gms.common.util.DynamiteApi class * {
-  public <fields>;
-  public <methods>;
-}
-
--dontwarn android.security.NetworkSecurityPolicy
