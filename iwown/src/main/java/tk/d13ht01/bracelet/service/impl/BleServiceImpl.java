@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package tk.d13ht01.bracelet.service;
+package tk.d13ht01.bracelet.service.impl;
 
 import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
@@ -33,40 +33,79 @@ import java.util.Date;
 import java.util.UUID;
 
 import tk.d13ht01.bracelet.MyApp;
-import tk.d13ht01.bracelet.bluetooth.Communication;
+import tk.d13ht01.bracelet.service.bluetooth.Communication;
+import tk.d13ht01.bracelet.common.BleServiceConstants;
 import tk.d13ht01.bracelet.common.WristbandModel;
-import tk.d13ht01.bracelet.device.Device;
-import tk.d13ht01.bracelet.device.GenericDevice;
-import tk.d13ht01.bracelet.device.I5Device;
-import tk.d13ht01.bracelet.device.I7s2Device;
+import tk.d13ht01.bracelet.model.device.Device;
+import tk.d13ht01.bracelet.model.device.GenericDevice;
+import tk.d13ht01.bracelet.model.device.I5Device;
+import tk.d13ht01.bracelet.model.device.I7s2Device;
+import tk.d13ht01.bracelet.service.BleService;
 
 /**
  * Service for managing connection and data communication with a GATT server hosted on a
  * given Bluetooth LE device.
  */
-public class BLEService extends Service {
-    public static final int STATE_DISCONNECTED = 0;
-    public static final int STATE_CONNECTING = 1;
-    public static final int STATE_CONNECTED = 2;
-    private final static String TAG = BLEService.class.getSimpleName();
+public class BleServiceImpl extends Service implements BleService {
+    private final static String TAG = BleServiceImpl.class.getSimpleName();
+    private static BleServiceImpl instance;
 
-    public static ArrayList<BluetoothGattService> services = new ArrayList<>();
-    public static ArrayList<BluetoothGattCharacteristic> characteristics = new ArrayList<>();
-    public static BLEService self;
-    public int mConnectionState = STATE_DISCONNECTED;
-    boolean alreadyChecking = false;
     private BluetoothManager mBluetoothManager;
     private BluetoothAdapter mBluetoothAdapter;
-    private Device device;
     private BluetoothGatt mBluetoothGatt;
 
-    public static BLEService getSelf() {
-        return self;
+    private ArrayList<BluetoothGattCharacteristic> characteristics = new ArrayList<>();
+    private ArrayList<BluetoothGattService> services = new ArrayList<>();
+
+    private Device device;
+    private int mConnectionState = BleServiceConstants.STATE_DISCONNECTED;
+    private boolean alreadyChecking = false;
+
+    public static BleServiceImpl getInstance() {
+        return instance;
     }
 
+    public ArrayList<BluetoothGattCharacteristic> getCharacteristics() {
+        return characteristics;
+    }
+
+    public void setCharacteristics(ArrayList<BluetoothGattCharacteristic> characteristics) {
+        this.characteristics = characteristics;
+    }
+
+    public ArrayList<BluetoothGattService> getServices() {
+        return services;
+    }
+
+    public void setServices(ArrayList<BluetoothGattService> services) {
+        this.services = services;
+    }
+
+    @Override
+    public int getmConnectionState() {
+        return mConnectionState;
+    }
+
+    @Override
+    public void setmConnectionState(int mConnectionState) {
+        this.mConnectionState = mConnectionState;
+    }
+
+
+    @Override
+    public Device getDevice() {
+        return this.device;
+    }
+
+    @Override
+    public BluetoothGatt getmBluetoothGatt() {
+        return this.mBluetoothGatt;
+    }
+
+    @Override
     public void onCreate() {
         super.onCreate();
-        self = this;
+        instance = this;
 
         if (MyApp.mPref.getString("device_model", "").equals(WristbandModel.MODEL_I7S2))
             this.device = new I7s2Device(this);
@@ -79,19 +118,12 @@ public class BLEService extends Service {
             Log.e(TAG, "Unable to initialize Bluetooth");
             return;
         }
-        this.connect(MyApp.mPref.getString("DEVICE_ADDR", ""), true);
+        this.connect(MyApp.mPref.getString("device_mac_address", ""), true);
     }
 
+    @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         return super.onStartCommand(intent, flags, startId);
-    }
-
-    public Device getDevice() {
-        return this.device;
-    }
-
-    public BluetoothGatt getmBluetoothGatt() {
-        return this.mBluetoothGatt;
     }
 
     /**
@@ -99,6 +131,7 @@ public class BLEService extends Service {
      *
      * @return Return true if the initialization is successful.
      */
+    @Override
     public boolean initialize() {
         // For API level 18 and above, get a reference to BluetoothAdapter through
         // BluetoothManager.
@@ -128,20 +161,20 @@ public class BLEService extends Service {
      * {@code BluetoothGattCallback#onConnectionStateChange(android.bluetooth.BluetoothGatt, int, int)}
      * callback.
      */
+    @Override
     public boolean connect(final String address, boolean forceConnect) {
         if (mBluetoothAdapter == null || address == null ||
-                (MyApp.mPref.getString("DEVICE_ADDR", "").length() <= 0) && address.length() <= 0) {
+                (MyApp.mPref.getString("device_mac_address", "").length() <= 0) && address.length() <= 0) {
             Log.w(TAG, "BluetoothAdapter not initialized or unspecified address.");
             return false;
         }
 
         // Previously connected device.  Try to reconnect.
-        if (!forceConnect && MyApp.mPref.getString("DEVICE_ADDR", "").length() > 0 &&
-                address.equals(MyApp.mPref.getString("DEVICE_ADDR", "")) && mBluetoothGatt != null) {
+        if (!forceConnect && MyApp.mPref.getString("device_mac_address", "").length() > 0 &&
+                address.equals(MyApp.mPref.getString("device_mac_address", "")) && mBluetoothGatt != null) {
             Log.d(TAG, "Trying to use an existing mBluetoothGatt for connection.");
-            //this.autoReconnectOnTimeout();
             if (mBluetoothGatt.connect()) {
-                mConnectionState = STATE_CONNECTING;
+                mConnectionState = BleServiceConstants.STATE_CONNECTING;
                 Log.d(TAG, "Reconnecting");
                 return true;
             } else {
@@ -161,8 +194,7 @@ public class BLEService extends Service {
         // We want to directly connect to the device
         mBluetoothGatt = device.connectGatt(this, true, this.device.getComm());
         Log.d(TAG, "Trying to create a new connection.");
-        mConnectionState = STATE_CONNECTING;
-        //this.autoReconnectOnTimeout();
+        mConnectionState = BleServiceConstants.STATE_CONNECTING;
         this.checkConnection();
         return true;
     }
@@ -173,6 +205,7 @@ public class BLEService extends Service {
      * {@code BluetoothGattCallback#onConnectionStateChange(android.bluetooth.BluetoothGatt, int, int)}
      * callback.
      */
+    @Override
     public void disconnect() {
         if (mBluetoothAdapter == null || mBluetoothGatt == null) {
             Log.w(TAG, "BluetoothAdapter not initialized");
@@ -190,6 +223,7 @@ public class BLEService extends Service {
      * After using a given BLE device, the app must call this method to ensure resources are
      * released properly.
      */
+    @Override
     public void close() {
         if (mBluetoothGatt == null)
             return;
@@ -197,9 +231,10 @@ public class BLEService extends Service {
         mBluetoothGatt = null;
     }
 
+    @Override
     public BluetoothGattCharacteristic getCharacteristic(UUID uuid) {
         try {
-            for (BluetoothGattCharacteristic characteristic : BLEService.characteristics) {
+            for (BluetoothGattCharacteristic characteristic : characteristics) {
                 if (characteristic.getUuid().equals(uuid)) {
                     return characteristic;
                 }
@@ -211,6 +246,7 @@ public class BLEService extends Service {
         }
     }
 
+    @Override
     public void checkConnection() {
         alreadyChecking = false;
         new Thread(new Runnable() {
@@ -221,17 +257,17 @@ public class BLEService extends Service {
                         return;
                     alreadyChecking = true;
                     Thread.sleep(60000);
-                    if (MyApp.mPref.getString("DEVICE_ADDR", "").length() > 0) {
+                    if (MyApp.mPref.getString("device_mac_address", "").length() > 0) {
                         if (isConnected()) {
                             // FIXME bad practice use comm object
                             if (Communication.lastDataReceived - (new Date().getTime()) >= 120000) {
-                                BLEService.getSelf().disconnect();
-                                BLEService.getSelf().connect(MyApp.mPref.getString("DEVICE_ADDR", ""), true);
+                                BleServiceImpl.getInstance().disconnect();
+                                BleServiceImpl.getInstance().connect(MyApp.mPref.getString("device_mac_address", ""), true);
                                 checkConnection();
                                 return;
                             }
-                            BLEService.getSelf().getDevice().askPower();
-                            BLEService.getSelf().getDevice().askDailyData();
+                            BleServiceImpl.getInstance().getDevice().askPower();
+                            BleServiceImpl.getInstance().getDevice().askDailyData();
 
 
                         }
@@ -243,10 +279,12 @@ public class BLEService extends Service {
         }).start();
     }
 
+    @Override
     public boolean isConnected() {
-        return BLEService.getSelf() != null && BLEService.getSelf().getDevice() != null;
+        return BleServiceImpl.getInstance() != null && BleServiceImpl.getInstance().getDevice() != null;
     }
 
+    @Override
     public IBinder onBind(Intent intent) {
         return null;
     }

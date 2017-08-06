@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 import com.squareup.leakcanary.LeakCanary;
 
-import tk.d13ht01.bracelet.service.BLEService;
+import tk.d13ht01.bracelet.service.impl.BleServiceImpl;
 import tk.d13ht01.bracelet.service.GoogleFitConnector;
 import tk.d13ht01.bracelet.utils.CommunicationUtils;
 
@@ -63,7 +63,7 @@ public class MyApp extends Application {
 
         if (CommunicationUtils.isBluetoothAvailable()) {
             // Create service
-            Intent gattServiceIntent = new Intent(this, BLEService.class);
+            Intent gattServiceIntent = new Intent(this, BleServiceImpl.class);
             startService(gattServiceIntent);
 
             PendingIntent pi = PendingIntent.getActivity(getApplicationContext(), 0,

@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import tk.d13ht01.bracelet.MyApp;
-import tk.d13ht01.bracelet.service.BLEService;
+import tk.d13ht01.bracelet.service.impl.BleServiceImpl;
 
 /**
  * Created by Aloyan Dmitry on 29.08.2015
@@ -21,20 +21,20 @@ public class DeskClockAlarmReceiver extends BroadcastReceiver {
         if (!MyApp.mPref.getBoolean("cbx_notice_deskclock", false))
             return;
 
-        if (BLEService.getSelf() == null || BLEService.getSelf().getDevice() == null)
+        if (BleServiceImpl.getInstance() == null || BleServiceImpl.getInstance().getDevice() == null)
             return;
 
         String action = intent.getAction();
         switch (action) {
             case ALARM_ALERT_ACTION:
                 isAlarm = true;
-                BLEService.getSelf().getDevice().sendCall("UP!UP!");
+                BleServiceImpl.getInstance().getDevice().sendCall("UP!UP!");
                 break;
             case ALARM_SNOOZE_ACTION:
             case ALARM_DISMISS_ACTION:
             case ALARM_DONE_ACTION:
                 isAlarm = false;
-                BLEService.getSelf().getDevice().sendCallEnd();
+                BleServiceImpl.getInstance().getDevice().sendCallEnd();
                 break;
         }
     }

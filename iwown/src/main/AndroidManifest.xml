@@ -50,7 +50,7 @@
             android:theme="@style/AppTheme.Transparent"/>
 
         <service
-            android:name="tk.d13ht01.bracelet.service.BLEService"
+            android:name="tk.d13ht01.bracelet.service.impl.BleServiceImpl"
             android:enabled="true"/>
         <service
             android:name="tk.d13ht01.bracelet.service.NotificationMonitorService"

@@ -1,10 +1,10 @@
-package tk.d13ht01.bracelet.device;
+package tk.d13ht01.bracelet.model.device;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-import tk.d13ht01.bracelet.service.BLEService;
+import tk.d13ht01.bracelet.service.BleService;
 import tk.d13ht01.bracelet.utils.CommunicationUtils;
 
 /**
@@ -12,7 +12,7 @@ import tk.d13ht01.bracelet.utils.CommunicationUtils;
  */
 
 public class I7s2Device extends GenericDevice {
-    public I7s2Device(BLEService bleService) {
+    public I7s2Device(BleService bleService) {
         super(bleService);
     }
 

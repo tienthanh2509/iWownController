@@ -12,7 +12,7 @@ import java.lang.reflect.Method;
 
 import tk.d13ht01.bracelet.MyApp;
 import tk.d13ht01.bracelet.common.BroadcastConstants;
-import tk.d13ht01.bracelet.service.BLEService;
+import tk.d13ht01.bracelet.service.impl.BleServiceImpl;
 
 /**
  * Created by Aloyan Dmitry on 29.08.2015
@@ -64,7 +64,7 @@ public class CallReceiver extends BroadcastReceiver {
         if (!MyApp.mPref.getBoolean("cbx_notice_call", false))
             return;
 
-        if (BLEService.getSelf() == null || BLEService.getSelf().getDevice() == null)
+        if (BleServiceImpl.getInstance() == null || BleServiceImpl.getInstance().getDevice() == null)
             return;
 
         Intent in;

@@ -23,7 +23,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import tk.d13ht01.bracelet.service.BLEService;
+import tk.d13ht01.bracelet.service.impl.BleServiceImpl;
 
 public class DeviceScanActivity extends ListActivity {
     private static final int REQUEST_ENABLE_BT = 1;
@@ -150,11 +150,11 @@ public class DeviceScanActivity extends ListActivity {
         }
 
         SharedPreferences.Editor ed = MyApp.mPref.edit();
-        ed.putString("DEVICE_ADDR", device.getAddress());
-        ed.putString("DEVICE_NAME", device.getName());
+        ed.putString("device_mac_address", device.getAddress());
+        ed.putString("device_name", device.getName());
         ed.apply();
 
-        BLEService.getSelf().connect(device.getAddress(), true);
+        BleServiceImpl.getInstance().connect(device.getAddress(), true);
 
         finish();
     }

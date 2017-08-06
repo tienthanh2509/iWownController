@@ -1,4 +1,4 @@
-package tk.d13ht01.bracelet.bluetooth;
+package tk.d13ht01.bracelet.service.bluetooth;
 
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCallback;
@@ -14,10 +14,12 @@ import java.util.Date;
 import java.util.UUID;
 
 import tk.d13ht01.bracelet.MyApp;
+import tk.d13ht01.bracelet.common.BleServiceConstants;
 import tk.d13ht01.bracelet.common.BroadcastConstants;
 import tk.d13ht01.bracelet.common.Constants;
-import tk.d13ht01.bracelet.device.Device;
-import tk.d13ht01.bracelet.service.BLEService;
+import tk.d13ht01.bracelet.model.device.Device;
+import tk.d13ht01.bracelet.service.BleService;
+import tk.d13ht01.bracelet.service.impl.BleServiceImpl;
 
 /**
  * Created by Dmitry on 29.08.2015.
@@ -26,10 +28,10 @@ public class Communication extends BluetoothGattCallback {
     private static final String TAG = Communication.class.getName();
     public static int apiVersion = 1;
     public static long lastDataReceived = 0;
-    private static BLEService bleService;
+    private static BleService bleService;
     private Device device;
 
-    public Communication(BLEService bleService, Device device) {
+    public Communication(BleService bleService, Device device) {
         Communication.bleService = bleService;
         this.device = device;
     }
@@ -38,19 +40,19 @@ public class Communication extends BluetoothGattCallback {
     public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
         Intent intent;
         if (newState == BluetoothProfile.STATE_CONNECTED) {
-            BLEService.getSelf().mConnectionState = BLEService.STATE_CONNECTED;
+            bleService.setmConnectionState(BleServiceConstants.STATE_CONNECTED);
             intent = new Intent(BroadcastConstants.ACTION_GATT_CONNECTED);
             MyApp.mContext.sendBroadcast(intent);
 
             Log.i(TAG, "Connected to GATT server.");
             Log.i(TAG, "Attempting to start service discovery.");
-            BLEService.getSelf().getmBluetoothGatt().discoverServices();
+            bleService.getmBluetoothGatt().discoverServices();
         } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
             intent = new Intent(BroadcastConstants.ACTION_GATT_DISCONNECTED);
             MyApp.mContext.sendBroadcast(intent);
 
             Log.i(TAG, "Disconnected from GATT server.");
-            BLEService.getSelf().mConnectionState = BLEService.STATE_DISCONNECTED;
+            BleServiceImpl.getInstance().setmConnectionState(BleServiceConstants.STATE_DISCONNECTED);
         }
     }
 
@@ -59,9 +61,9 @@ public class Communication extends BluetoothGattCallback {
         if (status == BluetoothGatt.GATT_SUCCESS) {
             Log.w(TAG, "onServicesDiscovered received: " + status);
             for (BluetoothGattService gattService : gatt.getServices()) {
-                BLEService.services.add(gattService);
+                BleServiceImpl.getInstance().getServices().add(gattService);
                 for (BluetoothGattCharacteristic chr : gattService.getCharacteristics()) {
-                    BLEService.characteristics.add(chr);
+                    BleServiceImpl.getInstance().getCharacteristics().add(chr);
                 }
             }
             BluetoothGattCharacteristic notify_chr =
@@ -114,7 +116,7 @@ public class Communication extends BluetoothGattCallback {
         //broadcastUpdate(ACTION_DATA_AVAILABLE, characteristic);
     }
 
-    public void parseCharacteristic(BluetoothGattCharacteristic chr) {
+    private void parseCharacteristic(BluetoothGattCharacteristic chr) {
         lastDataReceived = new Date().getTime();
 
         if (apiVersion >= 1)
@@ -166,9 +168,9 @@ public class Communication extends BluetoothGattCallback {
         public void run() {
             try {
                 BluetoothGattCharacteristic characteristic = bleService.getCharacteristic(uuid);
-                if (characteristic != null && BLEService.getSelf().getmBluetoothGatt() != null) {
+                if (characteristic != null && bleService.getmBluetoothGatt() != null) {
                     characteristic.setValue(data);
-                    BLEService.getSelf().getmBluetoothGatt().writeCharacteristic(characteristic);
+                    bleService.getmBluetoothGatt().writeCharacteristic(characteristic);
                 }
             } catch (Exception e) {
                 e.printStackTrace();

@@ -1,8 +1,8 @@
-package tk.d13ht01.bracelet.device;
+package tk.d13ht01.bracelet.model.device;
 
 import android.bluetooth.BluetoothGattCharacteristic;
 
-import tk.d13ht01.bracelet.bluetooth.Communication;
+import tk.d13ht01.bracelet.service.bluetooth.Communication;
 import tk.d13ht01.bracelet.model.DeviceClockAlarm;
 
 /**

@@ -23,7 +23,7 @@ import java.util.Date;
 
 import tk.d13ht01.bracelet.common.BroadcastConstants;
 import tk.d13ht01.bracelet.model.DeviceInfo;
-import tk.d13ht01.bracelet.service.BLEService;
+import tk.d13ht01.bracelet.service.impl.BleServiceImpl;
 
 public class MainFragment extends Fragment {
     private static final String TAG = MainFragment.class.getName();
@@ -76,7 +76,7 @@ public class MainFragment extends Fragment {
                                 CharSequence dt = android.text.format.DateFormat.format("dd/MM/yyyy HH:mm", new Date(timestamp));
                                 txtBraceletTime.setText(dt);
                             }
-                            BLEService.getSelf().getDevice().setDate();
+                            BleServiceImpl.getInstance().getDevice().setDate();
                             break;
                         case BroadcastConstants.ACTION_CONNECT_TO_GFIT:
 //                            if (MyApp.mPref.getBoolean("fit_connected", false) == false) {
@@ -91,11 +91,11 @@ public class MainFragment extends Fragment {
 //                                    Toast.LENGTH_SHORT).show();
 //                            ((Button) container.findViewById(R.id.connectToFitBtn))
 //                                    .setText(getResources().getString(R.string.reconnect_to_fit));
-//                            if (BLEService.getSelf() == null || BLEService.getSelf().getDevice() == null)
+//                            if (BleService.getInstance() == null || BleService.getInstance().getDevice() == null)
 //                                return;
 //
-////                            BLEService.getSelf().getDevice().askDailyData();
-//                            BLEService.getSelf().getDevice().subscribeForSportUpdates();
+////                            BleService.getInstance().getDevice().askDailyData();
+//                            BleService.getInstance().getDevice().subscribeForSportUpdates();
                             break;
                     }
                 }
@@ -166,7 +166,7 @@ public class MainFragment extends Fragment {
         txtConnectContainer = view.findViewById(R.id.status_container);
         txtConnectStatusIcon = (ImageView) view.findViewById(R.id.status_icon);
 
-        if (MyApp.getPreferences().getString("DEVICE_ADDR", "").equals("")) {
+        if (MyApp.getPreferences().getString("device_mac_address", "").equals("")) {
             updateDeviceStatus(2);
         } else {
             updateDeviceStatus(1);
@@ -179,15 +179,15 @@ public class MainFragment extends Fragment {
 
         activity.registerReceiver(mGattUpdateReceiver, gattIntentFilter());
 
-        if (BLEService.getSelf() != null &&
-                BLEService.getSelf().getmBluetoothGatt() != null &&
-                BLEService.getSelf().getmBluetoothGatt().getDevice() != null) {
+        if (BleServiceImpl.getInstance() != null &&
+                BleServiceImpl.getInstance().getmBluetoothGatt() != null &&
+                BleServiceImpl.getInstance().getmBluetoothGatt().getDevice() != null) {
             updateDeviceStatus(0);
             requestDeviceInfo();
         } else {
             updateDeviceStatus(1);
-            if (BLEService.getSelf() != null)
-                BLEService.getSelf().connect(MyApp.mPref.getString("DEVICE_ADDR", ""), true);
+            if (BleServiceImpl.getInstance() != null)
+                BleServiceImpl.getInstance().connect(MyApp.mPref.getString("device_mac_address", ""), true);
         }
     }
 
@@ -213,11 +213,11 @@ public class MainFragment extends Fragment {
             @Override
             public void run() {
                 try {
-                    BLEService.getSelf().getDevice().askFmVersionInfo();
+                    BleServiceImpl.getInstance().getDevice().askFmVersionInfo();
                     Thread.sleep(500);
-                    BLEService.getSelf().getDevice().askPower();
+                    BleServiceImpl.getInstance().getDevice().askPower();
                     Thread.sleep(500);
-                    BLEService.getSelf().getDevice().askDate();
+                    BleServiceImpl.getInstance().getDevice().askDate();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -240,7 +240,7 @@ public class MainFragment extends Fragment {
                 txtConnectStatus.setText("Updating...");
                 break;
             case 0: {
-                txtConnectStatus.setText(String.format("%s is connected!", BLEService.getSelf().getmBluetoothGatt().getDevice().getName()));
+                txtConnectStatus.setText(String.format("%s is connected!", BleServiceImpl.getInstance().getmBluetoothGatt().getDevice().getName()));
                 txtConnectStatus.setTextColor(ContextCompat.getColor(activity, R.color.darker_green));
                 txtConnectContainer.setBackgroundColor(ContextCompat.getColor(activity, R.color.darker_green));
                 txtConnectStatusIcon.setImageDrawable(ContextCompat.getDrawable(activity, R.drawable.ic_check_circle_84dp_white));

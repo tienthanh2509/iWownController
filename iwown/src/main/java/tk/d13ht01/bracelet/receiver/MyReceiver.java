@@ -13,7 +13,7 @@ import tk.d13ht01.bracelet.MyApp;
 import tk.d13ht01.bracelet.common.BroadcastConstants;
 import tk.d13ht01.bracelet.model.Notification;
 import tk.d13ht01.bracelet.model.Sport;
-import tk.d13ht01.bracelet.service.BLEService;
+import tk.d13ht01.bracelet.service.impl.BleServiceImpl;
 import tk.d13ht01.bracelet.service.GoogleFitConnector;
 
 /**
@@ -28,7 +28,7 @@ public class MyReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
         if (!Objects.equals(action, "android.intent.action.BOOT_COMPLETED") &&
-                (BLEService.getSelf() == null || BLEService.getSelf().getDevice() == null))
+                (BleServiceImpl.getInstance() == null || BleServiceImpl.getInstance().getDevice() == null))
             return;
 
         switch (action) {
@@ -38,24 +38,24 @@ public class MyReceiver extends BroadcastReceiver {
             case BroadcastConstants.ACTION_NEW_NOTIFICATION_RECEIVED:
                 Notification nf = (Notification) intent.getSerializableExtra("data");
                 String message = nf.getFromName() + ": " + nf.getMsgText();
-                BLEService.getSelf().getDevice().sendAlert(message, nf.getDeviceNoticeType());
+                BleServiceImpl.getInstance().getDevice().sendAlert(message, nf.getDeviceNoticeType());
                 break;
             case BroadcastConstants.ACTION_INCOMING_CALL:
                 hasIncomingCall = true;
                 stopLocatior(context); // If we receive call and locate the phone, need end locator
 
                 if (MyApp.mPref.getBoolean("cbx_action_mute_onclick", false))
-                    BLEService.getSelf().getDevice().setSelfieMode(true); // Set one click mode for mute
+                    BleServiceImpl.getInstance().getDevice().setSelfieMode(true); // Set one click mode for mute
 
                 String callid = intent.getStringExtra("data");
-                BLEService.getSelf().getDevice().sendCall(callid); // Show call in device
+                BleServiceImpl.getInstance().getDevice().sendCall(callid); // Show call in device
                 break;
             case BroadcastConstants.ACTION_END_CALL:
                 hasIncomingCall = false;
-                BLEService.getSelf().getDevice().sendCallEnd();
+                BleServiceImpl.getInstance().getDevice().sendCallEnd();
                 if (isIncomingCallMuted) { // If we mute call, we need restore it
                     ((AudioManager) context.getSystemService(Context.AUDIO_SERVICE)).setRingerMode(AudioManager.RINGER_MODE_NORMAL);
-                    BLEService.getSelf().getDevice().setSelfieMode(false);
+                    BleServiceImpl.getInstance().getDevice().setSelfieMode(false);
                 }
                 break;
             case BroadcastConstants.ACTION_SELFIE:
@@ -65,11 +65,11 @@ public class MyReceiver extends BroadcastReceiver {
                     am.adjustVolume(AudioManager.ADJUST_LOWER, AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE);
                     CallReceiver.rejectCall(context, 1);
                     isIncomingCallMuted = true;
-                    BLEService.getSelf().getDevice().setSelfieMode(false);
+                    BleServiceImpl.getInstance().getDevice().setSelfieMode(false);
                     return;
                 }
                 stopLocatior(context);
-                BLEService.getSelf().getDevice().setSelfieMode(false);
+                BleServiceImpl.getInstance().getDevice().setSelfieMode(false);
                 break;
             case BroadcastConstants.ACTION_PLAYPAUSE:
                 // Call reject
@@ -81,7 +81,7 @@ public class MyReceiver extends BroadcastReceiver {
                 // Locator service
                 if (!hasIncomingCall && MyApp.mPref.getBoolean("cbx_action_locator_on_long", false)) {
                     startLocator(context);
-                    BLEService.getSelf().getDevice().setSelfieMode(true);
+                    BleServiceImpl.getInstance().getDevice().setSelfieMode(true);
                     return;
                 }
                 break;
@@ -94,12 +94,12 @@ public class MyReceiver extends BroadcastReceiver {
 
             case BroadcastConstants.ACTION_CONNECT_TO_GFIT:
                 if (MyApp.mPref.getBoolean("fit_connected", false))
-                    if (BLEService.getSelf() != null && BLEService.getSelf().getDevice() != null)
-                        BLEService.getSelf().getDevice().subscribeForSportUpdates();
+                    if (BleServiceImpl.getInstance() != null && BleServiceImpl.getInstance().getDevice() != null)
+                        BleServiceImpl.getInstance().getDevice().subscribeForSportUpdates();
                 break;
             case BroadcastConstants.ACTION_GATT_CONNECTED:
                 if (MyApp.mPref.getBoolean("fit_connected", false))
-                    BLEService.getSelf().getDevice().subscribeForSportUpdates();
+                    BleServiceImpl.getInstance().getDevice().subscribeForSportUpdates();
                 break;
         }
     }

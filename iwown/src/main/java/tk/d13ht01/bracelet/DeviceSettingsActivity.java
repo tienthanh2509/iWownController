@@ -16,7 +16,7 @@ import android.widget.Toast;
 import java.util.HashMap;
 
 import tk.d13ht01.bracelet.common.BroadcastConstants;
-import tk.d13ht01.bracelet.service.BLEService;
+import tk.d13ht01.bracelet.service.impl.BleServiceImpl;
 import tk.d13ht01.bracelet.service.NotificationMonitorService;
 
 public class DeviceSettingsActivity extends AppCompatActivity {
@@ -68,7 +68,7 @@ public class DeviceSettingsActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (BLEService.getSelf() == null || BLEService.getSelf().getDevice() == null) {
+        if (BleServiceImpl.getInstance() == null || BleServiceImpl.getInstance().getDevice() == null) {
             Toast.makeText(this, R.string.device_settings_device_not_connected, Toast.LENGTH_LONG).show();
             finish();
             return;
@@ -99,11 +99,11 @@ public class DeviceSettingsActivity extends AppCompatActivity {
             @Override
             public void run() {
                 try {
-                    BLEService.getSelf().getDevice().askBle();
+                    BleServiceImpl.getInstance().getDevice().askBle();
                     Thread.sleep(500);
-                    BLEService.getSelf().getDevice().askConfig();
+                    BleServiceImpl.getInstance().getDevice().askConfig();
                     Thread.sleep(500);
-                    BLEService.getSelf().getDevice().askUserParams();
+                    BleServiceImpl.getInstance().getDevice().askUserParams();
                 } catch (Exception ignored) {
                 }
             }
@@ -125,7 +125,7 @@ public class DeviceSettingsActivity extends AppCompatActivity {
         super.onDestroy();
         new Saver().run();
 
-        if (BLEService.getSelf() == null || BLEService.getSelf().getDevice() == null)
+        if (BleServiceImpl.getInstance() == null || BleServiceImpl.getInstance().getDevice() == null)
             return;
 
     }
@@ -145,17 +145,17 @@ public class DeviceSettingsActivity extends AppCompatActivity {
             int height = Integer.parseInt(MyApp.mPref.getString("dev_conf_height", "180"));
             int age = Integer.parseInt(MyApp.mPref.getString("dev_conf_age", "26"));
             int gender = Integer.parseInt(MyApp.mPref.getString("dev_conf_gender", "0"));
-            BLEService.getSelf().getDevice().setUserParams(height, weight, gender > 0, age, goal_high);
+            BleServiceImpl.getInstance().getDevice().setUserParams(height, weight, gender > 0, age, goal_high);
 
             boolean light = MyApp.mPref.getBoolean("dev_conf_light", false);
             boolean gesture = MyApp.mPref.getBoolean("dev_conf_gesture", false);
             boolean englishunits = MyApp.mPref.getBoolean("dev_conf_englishunits", false);
             boolean use24hours = MyApp.mPref.getBoolean("dev_conf_use24hours", false);
             boolean autosleep = MyApp.mPref.getBoolean("dev_conf_autosleep", false);
-            BLEService.getSelf().getDevice().setConfig(light, gesture, englishunits,
+            BleServiceImpl.getInstance().getDevice().setConfig(light, gesture, englishunits,
                     use24hours, autosleep);
 
-            BLEService.getSelf().getDevice().setBle(MyApp.mPref.getBoolean("dev_conf_ble", false));
+            BleServiceImpl.getInstance().getDevice().setBle(MyApp.mPref.getBoolean("dev_conf_ble", false));
 
             NotificationMonitorService.settingsKeepForeign = MyApp.mPref.getBoolean("notif_foreign", false);
             NotificationMonitorService.settingsDelay = Integer.parseInt(MyApp.mPref.getString("notif_delay", "0"));
